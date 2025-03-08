@@ -23,7 +23,7 @@ Run the included demo to see all components in action:
 python src/demo.py
 ```
 
-![demo.gif](./docs/imgs/demo.gif)
+![demo.gif](https://github.com/devopsnextgenx/ctk-gui-components/blob/main/docs/imgs/demo.gif)
 
 
 ## Features
@@ -43,16 +43,20 @@ import ttkbootstrap as ttk
 from devopsnextgenx.components import StatusBar
 
 app = ttk.Window()
-status_bar = StatusBar(app)
-status_bar.pack(fill="x", side="bottom")
 
-# Update status
+# Create status bar with custom height and progress bar thickness
+status_bar = StatusBar(
+    app,
+    height=30,               # Custom height
+    progress_thickness=3     # Thin progress bar
+)
+status_bar.pack(fill="x", side="bottom", padx=10, pady=5)
+
+# Update status with text and progress
 status_bar.update_status("Processing...", 0.5)  # 50% progress
-status_bar.update_user("Admin")
-status_bar.update_access("RW")
 
-# Reset status
-status_bar.reset()
+# Reset status bar
+status_bar.reset()  # Returns to "Ready" state with 0% progress
 ```
 
 ### Table Component
@@ -79,26 +83,58 @@ from devopsnextgenx.components import Table, Header, WidgetType
 
 app = ttk.Window()
 
-# Define headers
+# Define headers with advanced options
 headers = [
-    Header(text="ID", editable=False),
-    Header(text="Name", editable=True, weight=1),
+    Header(
+        text="ID",
+        editable=False,
+        type=WidgetType.TEXT,
+        align="left"
+    ),
+    Header(
+        text="Name",
+        editable=True,
+        type=WidgetType.ENTRY,
+        weight=1,
+        text_color="white",
+        font_size=14,
+        on_change=lambda data, row, col: print(f"Changed: {data[row][col]}")
+    ),
     Header(
         text="Active",
         type=WidgetType.RNDTOGGLE,
         align="center",
-        weight=1
+        weight=1,
+        fg_color="#2a2d2e",
+        bg_color="#000000"
+    ),
+    Header(
+        text="Actions",
+        type=WidgetType.BUTTON,
+        align="center",
+        weight=1,
+        style="primary"
     )
 ]
 
 # Sample data
 data = [
-    [1, "John Doe", True],
-    [2, "Jane Smith", False]
+    [1, "John Doe", True, "Edit"],
+    [2, "Jane Smith", False, "Edit"]
 ]
 
-# Create table
-table = Table(app, headers=headers, data=data)
+# Create table with custom styling
+table = Table(
+    app,
+    headers=headers,
+    data=data,
+    row_height=30,
+    header_color="primary",
+    row_color="dark",
+    alternate_row_color="secondary",
+    highlight_color="info",
+    hover_color="#404040"
+)
 table.pack(fill="both", expand=True)
 ```
 
@@ -122,4 +158,4 @@ twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
 
 ## License
 
-[LICENSE](./LICENSE.md)
+[LICENSE](https://github.com/devopsnextgenx/ctk-gui-components/blob/main/LICENSE.md)
