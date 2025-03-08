@@ -12,7 +12,7 @@ dist/
 build/
 *.egg-info/
 .pypirc
-
+coverage_html_report/
 # Ignore Jupyter Notebook files
 .ipynb_checkpoints/
 

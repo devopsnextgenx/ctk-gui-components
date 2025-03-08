@@ -22,8 +22,10 @@ def test_status_bar_creation(status_bar):
 
 def test_status_bar_progress(status_bar):
     """Test the progress method of StatusBar"""
-    status_bar.update_status("Progressing...", 0.5)
+    status_bar.update_status("Progressing...")
     assert status_bar.progress_label.cget("text") == "Progressing..."
+    status_bar.update_status("Progressing...!!!", 0.5)
+    assert status_bar.progress_label.cget("text") == "Progressing...!!!"
     assert status_bar.progress_bar.cget("value") == 50
 
 def test_status_bar_reset(status_bar):
