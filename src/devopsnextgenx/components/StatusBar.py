@@ -1,107 +1,92 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
+import customtkinter as ctk
 
 class StatusBar(ttk.Frame):
     def __init__(
         self,
         master=None,
         height=30,
+        progress_thickness=3,  # Set default to a thin strip
         **kwargs
     ):
         super().__init__(master, height=height, **kwargs)
         
-        # Define the ratios
-        access_width_ratio = 0
-        user_width_ratio = 1
-        progress_width_ratio = 1
-        label_width_ratio = 5
+        self.progress_thickness = progress_thickness
         
-        total_width = label_width_ratio + user_width_ratio + access_width_ratio + progress_width_ratio
+        self.label_width_ratio = 15
+        self.user_width_ratio = 3
+        self.access_width_ratio = 1
+        self.progress_width_ratio = 5
+        self.total_width = (self.label_width_ratio + self.user_width_ratio +
+                            self.access_width_ratio + self.progress_width_ratio)
         
         self.progress_label = ttk.Label(
             self,
             text="Ready",
             anchor="w",
             padding=(10, 0),
-            width=int((label_width_ratio/total_width) * self.winfo_width()),
-            bootstyle="inverse-dark"
+            # bootstyle="inverse-dark"
         )
         self.progress_label.pack(side="left", fill="both", expand=True, padx=(0, 2))
         
-        self.user_label = ttk.Label(
-            self,
-            text="User",
-            width=int((user_width_ratio/total_width) * self.winfo_width()),
-            bootstyle="inverse-dark"
+        self.user_label = ttk.Label(self,
+            text="User", 
+            # bootstyle="inverse-dark"
         )
-        self.user_label.pack(side="left", padx=(0, 2))
+        self.user_label.pack(side="left", fill="y", padx=(0, 2))
         
-        self.access_label = ttk.Label(
-            self,
+        self.access_label = ttk.Label(self,
             text="RW",
-            width=int((access_width_ratio/total_width) * self.winfo_width()),
-            bootstyle="inverse-dark"
+            # bootstyle="inverse-dark"
         )
-        self.access_label.pack(side="left", padx=(0, 2))
+        self.access_label.pack(side="left", fill="y", padx=(0, 2))
         
+        self.progress_frame = ttk.Frame(self, height=self.progress_thickness, bootstyle="dark")
+        self.progress_frame.pack(side="left", fill="x", expand=True, padx=(5, 10), pady=(10, 10))
+        style = ttk.Style()
+        style.configure(
+            "Custom.Horizontal.TProgressbar",
+            thickness=self.progress_thickness,
+            troughcolor="#333333",
+            background="#007BFF",
+            troughrelief="flat",
+        )
         self.progress_bar = ttk.Progressbar(
-            self,
+            self.progress_frame,
             mode="determinate",
-            bootstyle="success-striped",
-            length=int((progress_width_ratio/total_width) * self.winfo_width())
+            bootstyle=(PRIMARY, STRIPED),
+            style="Custom.Horizontal.TProgressbar",
+            length=100,  
         )
-        self.progress_bar.pack(side="left", padx=(5, 10))
         self.progress_bar["value"] = 0
+
+        self.progress_bar.pack(fill="x", expand=True)
         
-        # Bind resize event to update widget widths
         self.bind("<Configure>", self.on_resize)
+        self.update_idletasks()
+        self.on_initial_display()
+
+    def on_initial_display(self):
+        self.on_resize(None)
 
     def on_resize(self, event):
-        """Update widget widths when frame is resized"""
-        # Recalculate widget widths based on ratios
-        access_width_ratio = 1
-        user_width_ratio = 3
-        progress_width_ratio = 5
-        label_width_ratio = 15
-        total_width = label_width_ratio + user_width_ratio + access_width_ratio + progress_width_ratio
+        frame_width = self.winfo_width() if event is None else event.width
+        usable_width = frame_width * 0.95
         
-        frame_width = event.width
+        self.user_label.configure(width=max(5, int((self.user_width_ratio/self.total_width) * usable_width / 10)))
+        self.access_label.configure(width=max(2, int((self.access_width_ratio/self.total_width) * usable_width / 10)))
         
-        # Update widget widths
-        self.progress_label.configure(width=int((label_width_ratio/total_width) * frame_width * 0.9))
-        self.user_label.configure(width=int((user_width_ratio/total_width) * frame_width * 0.9))
-        self.access_label.configure(width=int((access_width_ratio/total_width) * frame_width * 0.9))
-        self.progress_bar.configure(length=int((progress_width_ratio/total_width) * frame_width * 0.9))
+        progress_width = max(100, int((self.progress_width_ratio/self.total_width) * usable_width))
+        self.progress_bar.configure(length=progress_width)
 
     def update_status(self, text, progress=None):
-        """Update status text and progress bar value.
-        
-        Args:
-            text (str): Status text to display
-            progress (float): Progress value between 0 and 1 (optional)
-        """
         self.progress_label.configure(text=text)
         if progress is not None:
             self.progress_bar["value"] = progress * 100
-
-    def update_user(self, user):
-        """Update the user label.
-        
-        Args:
-            user (str): User name to display
-        """
-        self.user_label.configure(text=user)
-    
-    def update_access(self, access):
-        """Update the access label.
-        
-        Args:
-            access (str): Access permissions to display
-        """
-        self.access_label.configure(text=access)
+            self.progress_bar.update_idletasks()
 
     def reset(self):
-        """Reset the status bar to initial state."""
         self.progress_label.configure(text="Ready")
         self.progress_bar["value"] = 0
 
@@ -114,16 +99,21 @@ if __name__ == "__main__":
     main_frame = ttk.Frame(app)
     main_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
-    # Add status bar at the bottom
-    app.status_bar = StatusBar(app)
-    app.status_bar.pack(fill="x", side="bottom", padx=10, pady=5)
-    
-    # Add a test button to show updating status
     test_button = ttk.Button(
         main_frame, 
         text="Test Status Update", 
         command=lambda: app.status_bar.update_status("Processing...", 0.75)
     )
     test_button.pack(pady=20)
+    
+    reset_button = ttk.Button(
+        main_frame, 
+        text="Reset Status", 
+        command=lambda: app.status_bar.reset()
+    )
+    reset_button.pack(pady=10)
+    
+    app.status_bar = StatusBar(app, progress_thickness=3)  # Set thin progress bar
+    app.status_bar.pack(fill="x", side="bottom", padx=10, pady=5)
     
     app.mainloop()
