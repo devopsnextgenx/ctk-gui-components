@@ -34,6 +34,23 @@ A feature-rich table widget offering:
 pip install -r requirements.txt
 ```
 
+## Requirements
+
+- Python 3.x
+- customtkinter
+- ttkbootstrap
+- pydantic
+
+## Demo
+
+Run the included demo to see all components in action:
+
+```bash
+python src/demo.py
+```
+
+![demo.gif](./docs/imgs/demo.gif)
+
 ## Usage
 
 ### StatusBar Example
@@ -94,22 +111,6 @@ Both components support extensive customization through their constructor parame
 - Sizes and proportions
 - Event callbacks
 - Visual styles
-
-## Demo
-
-Run the included demo to see all components in action:
-
-```bash
-python src/demo.py
-```
-
-![demo.gif](./docs/imgs/demo.gif)
-
-## Requirements
-
-- Python 3.x
-- ttkbootstrap
-- pydantic
 
 ## License
 
