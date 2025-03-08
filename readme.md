@@ -103,6 +103,8 @@ Run the included demo to see all components in action:
 python src/demo.py
 ```
 
+![demo.gif](./docs/imgs/demo.gif)
+
 ## Requirements
 
 - Python 3.x

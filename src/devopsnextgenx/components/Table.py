@@ -23,6 +23,7 @@ class Header(BaseModel):
     font_size: int = 14
     weight: int = 0
     align: str = "left"
+    style: str = "primary"
     colNo: Optional[int] = None
     action: Optional[Callable] = None
     editable: bool = False

@@ -74,16 +74,29 @@ class Demo(ttk.Window):
             weight=1,
             on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}")
         )
+        
+        # Add new header for remove button
+        header6 = Header(
+            text="Actions",
+            type=WidgetType.BUTTON,
+            align="center",
+            fg_color="#2a2d2e",
+            bg_color="#000000",
+            font_size=14,
+            weight=1,
+            button_text="Remove",
+            on_click=self.remove_user
+        )
 
-        headers = [header1, header2, header3, header4, header5]
+        headers = [header1, header2, header3, header4, header5, header6]
 
-        # Add sample data
+        # Add sample data with placeholder for remove button
         users = [
-            [1, "Alice", 30, "alice@example.com", True],
-            [2, "Bob", 25, "bob@example.com", False],
-            [3, "Charlie", 35, "charlie@example.com", True],
-            [4, "David", 28, "david@example.com", True],
-            [5, "Eve", 22, "eve@example.com", True],
+            [1, "Alice", 30, "alice@example.com", True, "Remove"],
+            [2, "Bob", 25, "bob@example.com", False, "Remove"],
+            [3, "Charlie", 35, "charlie@example.com", True, "Remove"],
+            [4, "David", 28, "david@example.com", True, "Remove"],
+            [5, "Eve", 22, "eve@example.com", True, "Remove"],
         ]
 
         self.table = Table(parent, headers=headers, data=users)
@@ -112,6 +125,13 @@ class Demo(ttk.Window):
         """Sort table data by email"""
         sorted_data = sorted(self.table.data, key=lambda x: x[3], reverse=not ascending)
         self.table.update_data(sorted_data)
+
+    def remove_user(self, row):
+        """Remove a user from the table"""
+        if row < len(self.table.data):
+            data = self.table.data.copy()
+            data.pop(row)
+            self.table.update_data(data)
 
 if __name__ == "__main__":
     app = Demo()
