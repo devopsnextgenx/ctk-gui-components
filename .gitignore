@@ -1,0 +1,22 @@
+# Ignore all log files
+*.log
+
+# Ignore virtual environment directories
+venv/
+env/
+virtualenv/
+.pytest_cache/
+
+# Ignore build artifacts
+dist/
+build/
+*.egg-info/
+
+# Ignore Jupyter Notebook files
+.ipynb_checkpoints/
+
+# Ignore temporary files
+__pycache__/
+*.pyc
+*.pyo
+*~
