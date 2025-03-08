@@ -2,32 +2,6 @@
 
 A collection of modern, customizable GUI components built with ttkbootstrap for Python desktop applications.
 
-## Features
-
-### StatusBar Component
-A responsive status bar widget that includes:
-- Status text display with progress bar
-- User information display
-- Access rights indicator
-- Progress bar with percentage
-- Auto-resizing capabilities
-
-### Table Component
-A feature-rich table widget offering:
-- Customizable headers with multiple column types
-- Support for different widget types per column:
-  - TEXT: Regular text display
-  - CHECKBOX: Boolean value selector
-  - SQTOGGLE: Square toggle switch
-  - RNDTOGGLE: Round toggle switch
-  - ENTRY: Editable text field
-  - BUTTON: Clickable button
-- Sortable columns
-- Row selection and highlighting
-- Cell editing capabilities
-- Custom styling options
-- Responsive layout
-
 ## Installation
 
 ```bash
@@ -51,7 +25,16 @@ python src/demo.py
 
 ![demo.gif](./docs/imgs/demo.gif)
 
-## Usage
+
+## Features
+
+### StatusBar Component
+A responsive status bar widget that includes:
+- Status text display with progress bar
+- User information display
+- Access rights indicator
+- Progress bar with percentage
+- Auto-resizing capabilities
 
 ### StatusBar Example
 
@@ -71,6 +54,22 @@ status_bar.update_access("RW")
 # Reset status
 status_bar.reset()
 ```
+
+### Table Component
+A feature-rich table widget offering:
+- Customizable headers with multiple column types
+- Support for different widget types per column:
+  - TEXT: Regular text display
+  - CHECKBOX: Boolean value selector
+  - SQTOGGLE: Square toggle switch
+  - RNDTOGGLE: Round toggle switch
+  - ENTRY: Editable text field
+  - BUTTON: Clickable button
+- Sortable columns
+- Row selection and highlighting
+- Cell editing capabilities
+- Custom styling options
+- Responsive layout
 
 ### Table Example
 
