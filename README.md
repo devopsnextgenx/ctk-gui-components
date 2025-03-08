@@ -111,6 +111,14 @@ Both components support extensive customization through their constructor parame
 - Event callbacks
 - Visual styles
 
+## Build and Publish
+```bash
+pip install setuptools wheel
+python setup.py sdist bdist_wheel
+pip install twine
+twine upload dist/*
+```
+
 ## License
 
-[Add your license information here]
+[LICENSE](./LICENSE.md)
