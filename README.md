@@ -1,3 +1,5 @@
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=devopsnextgenx_ctk-gui-components&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=devopsnextgenx_ctk-gui-components)
+
 # DevOpsNextGenX GUI Components
 
 A collection of modern, customizable GUI components built with ttkbootstrap for Python desktop applications.
