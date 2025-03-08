@@ -3,6 +3,12 @@ from ttkbootstrap.constants import *
 import customtkinter as ctk
 
 class StatusBar(ttk.Frame):
+    """
+    A custom status bar with a progress bar.
+    master: Parent widget
+    height: Height of the status bar
+    progress_thickness: Thickness of the progress bar
+    """
     def __init__(
         self,
         master=None,
@@ -81,12 +87,18 @@ class StatusBar(ttk.Frame):
         self.progress_bar.configure(length=progress_width)
 
     def update_status(self, text, progress=None):
+        """
+        Update the status bar with a new message and progress.
+        text: New status message
+        progress: Progress value between 0 and 1
+        """
         self.progress_label.configure(text=text)
         if progress is not None:
             self.progress_bar["value"] = progress * 100
             self.progress_bar.update_idletasks()
 
     def reset(self):
+        """Reset the status bar to its initial state."""
         self.progress_label.configure(text="Ready")
         self.progress_bar["value"] = 0
 

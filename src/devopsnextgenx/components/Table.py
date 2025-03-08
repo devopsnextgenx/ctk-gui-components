@@ -15,7 +15,29 @@ class WidgetType(Enum):
     BUTTON = "BUTTON"
 
 class Header(BaseModel):
-    """Represents a table header configuration."""
+    """
+    Represents a table header configuration.
+    text: str - The header text
+    type: WidgetType - The widget type for the column
+    - TEXT: Default text label
+    - CHECKBOX: Checkbox
+    - SQTOGGLE: Square toggle switch
+    - RNDTOGGLE: Round toggle switch
+    - RADIOBTN: Radio button
+    - ENTRY: Text entry
+    - BUTTON: Button
+    text_color: str - Text color (default: white)
+    fg_color: str - Foreground color (default: dark)
+    bg_color: str - Background color (default: None)
+    font_size: int - Font size (default: 14)
+    weight: int - Column weight (default: 0)
+    align: str - Text alignment (default: left)
+    editable: bool - Whether the column is editable (default: False)
+    style: Optional[str] - Custom style for the widget (default: None)
+    colNo: Optional[int] - Column number (default: None)
+    action: Optional[Callable] - Action callback for header click (default: None)
+    on_change: Optional[Callable] - On change callback for cell value change (default: None)
+    """
     text: str
     type: WidgetType = WidgetType.TEXT
     text_color: str = None
@@ -31,6 +53,18 @@ class Header(BaseModel):
     on_change: Optional[Callable] = None
 
 class Table(ttk.Frame):
+    """
+    A table widget that displays data in rows and columns.
+    master: any - The parent widget
+    headers: List[Header] - List of table headers
+    data: List[List[Any]] - List of data rows
+    row_height: int - Row height (default: 30)
+    header_color: str - Header color (default: primary)
+    row_color: str - Row color (default: dark)
+    alternate_row_color: str - Alternate row color (default: secondary)
+    highlight_color: str - Highlight color (default: info)
+    hover_color: str - Hover color (default: #404040)
+    """
     def __init__(
         self,
         master: any,
