@@ -10,6 +10,7 @@ class WidgetType(Enum):
     CHECKBOX = "CHECKBOX"
     SQTOGGLE = "SQTOGGLE"
     RNDTOGGLE = "RNDTOGGLE"
+    RADIOBTN = "RADIOBTN"
     ENTRY = "ENTRY"
     BUTTON = "BUTTON"
 
@@ -23,10 +24,10 @@ class Header(BaseModel):
     font_size: int = 14
     weight: int = 0
     align: str = "left"
-    style: str = "primary"
+    editable: bool = False
+    style: Optional[str] = None
     colNo: Optional[int] = None
     action: Optional[Callable] = None
-    editable: bool = False
     on_change: Optional[Callable] = None
 
 class Table(ttk.Frame):
@@ -214,6 +215,7 @@ class Table(ttk.Frame):
                 # Add event handling
                 cell_widget.configure(command=lambda r=row_idx-1, c=col_idx, sw=cell_widget: 
                     self._handle_toggle_change(r, c, sw))
+                
             case WidgetType.RNDTOGGLE:
                 # Create toggle/switch widget
                 var = BooleanVar()
@@ -221,6 +223,33 @@ class Table(ttk.Frame):
                     self,
                     text="",
                     style="round-toggle" if row_idx % 2 == 0 else "round-toggle",
+                    variable=var
+                )
+                
+                # Set initial value
+                if isinstance(cell_data, bool):
+                    var.set(cell_data)
+                elif isinstance(cell_data, (int, float)):
+                    var.set(bool(cell_data))
+                elif isinstance(cell_data, str) and cell_data.lower() in ('true', 'yes', '1'):
+                    var.set(True)
+                else:
+                    var.set(False)
+                
+                # Store the BooleanVar reference
+                cell_widget.var = var
+                
+                # Add event handling
+                cell_widget.configure(command=lambda r=row_idx-1, c=col_idx, sw=cell_widget: 
+                    self._handle_toggle_change(r, c, sw))
+                
+            case WidgetType.RADIOBTN:
+                # Create toggle/switch widget
+                var = BooleanVar()
+                cell_widget = ttk.Radiobutton(
+                    self,
+                    text="",
+                    style="primary",
                     variable=var
                 )
                 
@@ -267,7 +296,7 @@ class Table(ttk.Frame):
                 cell_widget = ttk.Button(
                     self,
                     text=str(cell_data),
-                    style="Row.TButton" if row_idx % 2 == 0 else "Alt.TButton",
+                    style=header.style if header.style is not None else "Row.TButton",
                 )
                 
                 # Add event handling

@@ -76,6 +76,16 @@ class Demo(ttk.Window):
         )
         
         # Add new header for remove button
+        remove_button_style = ttk.Style()
+        remove_button_style.configure("Remove.TButton",
+                        foreground="black",  # Text color
+                        background="red",    # Not directly used in ttk
+                        borderwidth=1,
+                        focusthickness=3,
+                        relief="flat")
+        remove_button_style.map("Remove.TButton",
+                background=[("active", "#cc0000"), ("pressed", "#990000")],
+                foreground=[("active", "white"), ("pressed", "white")])
         header6 = Header(
             text="Actions",
             type=WidgetType.BUTTON,
@@ -85,7 +95,8 @@ class Demo(ttk.Window):
             font_size=14,
             weight=1,
             button_text="Remove",
-            on_click=self.remove_user
+            on_click=self.remove_user,
+            style="Remove.TButton",
         )
 
         headers = [header1, header2, header3, header4, header5, header6]
