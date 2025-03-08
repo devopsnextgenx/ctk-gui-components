@@ -23,7 +23,7 @@ Run the included demo to see all components in action:
 python src/demo.py
 ```
 
-![demo.gif](https://github.com/devopsnextgenx/ctk-gui-components/blob/main/docs/imgs/demo.gif)
+![demo.gif](https://raw.githubusercontent.com/devopsnextgenx/ctk-gui-components/refs/heads/main/docs/imgs/demo.gif)
 
 
 ## Features
