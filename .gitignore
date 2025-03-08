@@ -11,6 +11,7 @@ virtualenv/
 dist/
 build/
 *.egg-info/
+.pypirc
 
 # Ignore Jupyter Notebook files
 .ipynb_checkpoints/

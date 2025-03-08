@@ -117,6 +117,7 @@ pip install setuptools wheel
 python setup.py sdist bdist_wheel
 pip install twine
 twine upload dist/*
+twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
 ```
 
 ## License
