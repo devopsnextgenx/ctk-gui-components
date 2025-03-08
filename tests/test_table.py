@@ -103,13 +103,16 @@ def test_button_cell_exists(table):
 def test_header_click_sorting(table):
     """Test header click sorting functionality"""
     def sort_function(ascending):
-        pass
+        # Sort the table data based on the first column
+        table.data.sort(key=lambda row: row[0], reverse=not ascending)
     
     table.headers[0].action = sort_function
     table._handle_header_click(table.headers[0])
     assert table._sort_ascending[0] == False
+    assert table.data[0][0] == "Row 2"  # Assuming initial data is sorted ascending
     table._handle_header_click(table.headers[0])
     assert table._sort_ascending[0] == True
+    assert table.data[0][0] == "Row 1"  # Assuming initial data is sorted ascending
 
 # Test uncommented as it should now work with fixed implementation
 def test_widget_styles(table):
