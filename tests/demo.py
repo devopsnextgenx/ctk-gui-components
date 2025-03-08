@@ -81,6 +81,36 @@ class Demo(ttk.Window):
             weight=1,
             on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}")
         )
+        header6 = Header(
+            text="Notify", 
+            type=WidgetType.SQTOGGLE,
+            align="center",
+            fg_color="#2a2d2e",
+            bg_color="#000000",
+            font_size=14,
+            weight=1,
+            on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}")
+        )
+        header7 = Header(
+            text="isPremium", 
+            type=WidgetType.CHECKBOX,
+            align="center",
+            fg_color="#2a2d2e",
+            bg_color="#000000",
+            font_size=14,
+            weight=1,
+            on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}")
+        )
+        header8 = Header(
+            text="isBlocked", 
+            type=WidgetType.RADIOBTN,
+            align="center",
+            fg_color="#2a2d2e",
+            bg_color="#000000",
+            font_size=14,
+            weight=1,
+            on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}")
+        )
         
         # Add new header for remove button
         remove_button_style = ttk.Style()
@@ -93,7 +123,7 @@ class Demo(ttk.Window):
         remove_button_style.map("Remove.TButton",
                 background=[("active", "#cc0000"), ("pressed", "#990000")],
                 foreground=[("active", "white"), ("pressed", "white")])
-        header6 = Header(
+        header9 = Header(
             text="Actions",
             type=WidgetType.BUTTON,
             align="center",
@@ -106,15 +136,15 @@ class Demo(ttk.Window):
             style="Remove.TButton",
         )
 
-        headers = [header1, header2, header3, header4, header5, header6]
+        headers = [header1, header2, header3, header4, header5, header6, header7, header8, header9]
 
         # Add sample data with placeholder for remove button
         users = [
-            [1, "Alice", 30, "alice@example.com", True, "Remove"],
-            [2, "Bob", 25, "bob@example.com", False, "Remove"],
-            [3, "Charlie", 35, "charlie@example.com", True, "Remove"],
-            [4, "David", 28, "david@example.com", True, "Remove"],
-            [5, "Eve", 22, "eve@example.com", True, "Remove"],
+            [1, "Alice", 30, "alice@example.com", True, True, True, False, "Remove"],
+            [2, "Bob", 25, "bob@example.com", False, False, True, True, "Remove"],
+            [3, "Charlie", 35, "charlie@example.com", True, True, False, False, "Remove"],
+            [4, "David", 28, "david@example.com", True, False, True, True, "Remove"],
+            [5, "Eve", 22, "eve@example.com", True, True, False, False, "Remove"],
         ]
 
         self.table = Table(parent, headers=headers, data=users)

@@ -93,7 +93,10 @@ class Table(ttk.Frame):
         self.selected_cell = None
         self._cells = {}
 
+        # Define custom styles
         style = ttk.Style()
+        
+        # Configure header style
         style.configure(
             "Header.TLabel",
             background="#00008B",  # Dark blue
@@ -102,8 +105,15 @@ class Table(ttk.Frame):
             anchor="center",
             font=("TkDefaultFont", 10, "bold")
         )
+        
+        # Configure row styles
         style.configure("Row.TLabel", padding=5)
         style.configure("Alt.TLabel", padding=5)
+        
+        # Use ttk built-in styles instead of creating custom ones
+        # ttkbootstrap already has predefined styles we can use:
+        # - For checks: primary.TCheckbutton, secondary.TCheckbutton, etc.
+        # - For toggles: primary-toggle.Toolbutton, round-toggle.Toolbutton, etc.
         
         self._create_table()
 
@@ -202,7 +212,8 @@ class Table(ttk.Frame):
                 cell_widget = ttk.Checkbutton(
                     self,
                     text="",
-                    style="Row.TCheckbutton" if row_idx % 2 == 0 else "Alt.TCheckbutton",
+                    # Fix: Use a standard ttkbootstrap style instead of a custom one
+                    style="success.TCheckbutton",
                     variable=var
                 )
                 
@@ -226,10 +237,11 @@ class Table(ttk.Frame):
             case WidgetType.SQTOGGLE:
                 # Create toggle/switch widget
                 var = BooleanVar()
+                # Fix: Use standard ttkbootstrap style for toggles
                 cell_widget = ttk.Checkbutton(
                     self,
                     text="",
-                    style="square-toggle" if row_idx % 2 == 0 else "square-toggle",
+                    style="primary-square-toggle.Toolbutton",  # Use Toolbutton style class which supports toggles
                     variable=var
                 )
                 
@@ -253,10 +265,11 @@ class Table(ttk.Frame):
             case WidgetType.RNDTOGGLE:
                 # Create toggle/switch widget
                 var = BooleanVar()
+                # Fix: Use standard ttkbootstrap style for round toggles
                 cell_widget = ttk.Checkbutton(
                     self,
                     text="",
-                    style="round-toggle" if row_idx % 2 == 0 else "round-toggle",
+                    style="primary-round-toggle.Toolbutton",  # Use Toolbutton style class with round-toggle 
                     variable=var
                 )
                 
@@ -278,12 +291,12 @@ class Table(ttk.Frame):
                     self._handle_toggle_change(r, c, sw))
                 
             case WidgetType.RADIOBTN:
-                # Create toggle/switch widget
+                # Create radio button widget
                 var = BooleanVar()
                 cell_widget = ttk.Radiobutton(
                     self,
                     text="",
-                    style="primary",
+                    style="primary.TRadiobutton",
                     variable=var
                 )
                 
@@ -308,7 +321,8 @@ class Table(ttk.Frame):
                 # Create entry widget
                 cell_widget = ttk.Entry(
                     self,
-                    style="Row.TEntry" if row_idx % 2 == 0 else "Alt.TEntry",
+                    # Fix: Use standard ttkbootstrap styles
+                    style="primary.TEntry",
                 )
                 
                 # Set initial value
@@ -330,7 +344,7 @@ class Table(ttk.Frame):
                 cell_widget = ttk.Button(
                     self,
                     text=str(cell_data),
-                    style=header.style if header.style is not None else "Row.TButton",
+                    style=header.style if header.style is not None else "primary.TButton",
                 )
                 
                 # Add event handling

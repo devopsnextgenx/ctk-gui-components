@@ -16,6 +16,12 @@ pip install -r requirements.txt
 - customtkinter
 - ttkbootstrap
 - pydantic
+- pytest-cov
+
+## Test and Coverage
+```bash
+pytest --cov=src --cov-report=term-missing
+```
 
 ## Demo
 
