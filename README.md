@@ -1,4 +1,4 @@
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=devopsnextgenx_ctk-gui-components&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=devopsnextgenx_ctk-gui-components)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=devopsnextgenx_ctk-gui-components&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=devopsnextgenx_ctk-gui-components) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=devopsnextgenx_ctk-gui-components&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=devopsnextgenx_ctk-gui-components)
 
 # DevOpsNextGenX GUI Components
 
