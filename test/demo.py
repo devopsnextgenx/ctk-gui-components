@@ -1,3 +1,10 @@
+import os
+import sys
+
+# Add src directory to Python path
+src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
+sys.path.append(src_path)
+
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from devopsnextgenx.components.StatusBar import StatusBar
