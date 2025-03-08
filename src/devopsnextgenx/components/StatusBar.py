@@ -61,7 +61,7 @@ class StatusBar(ttk.Frame):
         )
         self.progress_bar["value"] = 0
 
-        self.progress_bar.pack(fill="x", expand=True)
+        self.progress_bar.pack(fill="x", expand=False)
         
         self.bind("<Configure>", self.on_resize)
         self.update_idletasks()

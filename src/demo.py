@@ -2,7 +2,7 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from devopsnextgenx.components.StatusBar import StatusBar
 from devopsnextgenx.components.Table import Table, Header, WidgetType
-
+import time
 class Demo(ttk.Window):
     def __init__(self):
         super().__init__(themename="darkly")
@@ -33,7 +33,7 @@ class Demo(ttk.Window):
         self.add_user_info_table(main_frame)
 
         # Add status bar at the bottom
-        self.status_bar = StatusBar(self)
+        self.status_bar = StatusBar(self, progress_thickness=5)
         self.status_bar.pack(fill="x", side="bottom", padx=10, pady=5)
 
     def add_user_info_table(self, parent):
