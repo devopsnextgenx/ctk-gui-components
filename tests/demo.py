@@ -22,19 +22,19 @@ else:
     print("Icon file not found!")
 
 def alert():
-    my_alert = Alert(state="info", title="Title", body_text="body text", btn1="Ok", btn2="Cancel")
+    alertx = Alert(state="info", title="Title", body_text="How do I get to top on AI?", btn1="Ok", btn2="Cancel")
 WIDGETS = {
-    "CTkAlert": alert,
-        #    "CTkBanner": banner,
-        #    "CTkNotification": notification,
-        #    "CTkCard": card,
-        #    "CTkCarousel": carousel,
-        #    "CTkInput1": ctk_input_1,
-        #    "CTkInput2": ctk_input_2,
-        #    "CTkLoader": loader,
-        #    "CTkPopupMenu": ctk_popup,
-        #    "CTkProgressPopup": progress_popup,
-        #    "CTkTreeview": treeview
+    "Alert": alert,
+        #    "Banner": banner,
+        #    "Notification": notification,
+        #    "Card": card,
+        #    "Carousel": carousel,
+        #    "Input1": ctk_input_1,
+        #    "Input2": ctk_input_2,
+        #    "Loader": loader,
+        #    "PopupMenu": ctk_popup,
+        #    "ProgressPopup": progress_popup,
+        #    "Treeview": treeview
 }
 
 
@@ -56,7 +56,7 @@ class Demo(ttk.Window):
         main_frame = ttk.Frame(self)
         main_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
-        options = ["CTkAlert"]
+        options = ["Alert"]
         option = ctk.CTkOptionMenu(main_frame, values=options, width=200, command=toggle_widgets)
         option.pack(pady=20)
         option.set("None")
