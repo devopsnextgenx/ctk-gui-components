@@ -1,15 +1,50 @@
 import os
 import sys
+import time
 
 # Add src directory to Python path
 src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
 sys.path.append(src_path)
 
+import customtkinter as ctk
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from devopsnextgenx.components.StatusBar import StatusBar
 from devopsnextgenx.components.Table import Table, Header, WidgetType
-import time
+from devopsnextgenx.components.messageHub import Alert
+from devopsnextgenx.utils import get_icon_path
+
+closeDark = get_icon_path("close", "dark")
+print(f"Icon path for 'close' icon in dark theme: {closeDark}")
+if os.path.exists(closeDark):
+    print("Icon file exists!")
+else:
+    print("Icon file not found!")
+
+def alert():
+    my_alert = Alert(state="info", title="Title", body_text="body text", btn1="Ok", btn2="Cancel")
+WIDGETS = {
+    "CTkAlert": alert,
+        #    "CTkBanner": banner,
+        #    "CTkNotification": notification,
+        #    "CTkCard": card,
+        #    "CTkCarousel": carousel,
+        #    "CTkInput1": ctk_input_1,
+        #    "CTkInput2": ctk_input_2,
+        #    "CTkLoader": loader,
+        #    "CTkPopupMenu": ctk_popup,
+        #    "CTkProgressPopup": progress_popup,
+        #    "CTkTreeview": treeview
+}
+
+
+def toggle_widgets(widget):
+    for widgets in preview_frame.winfo_children():
+        widgets.destroy()
+
+    var = WIDGETS[widget]
+    var()
+
 class Demo(ttk.Window):
     def __init__(self):
         super().__init__(themename="darkly")
@@ -20,6 +55,11 @@ class Demo(ttk.Window):
         # Create main frame
         main_frame = ttk.Frame(self)
         main_frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+        options = ["CTkAlert"]
+        option = ctk.CTkOptionMenu(main_frame, values=options, width=200, command=toggle_widgets)
+        option.pack(pady=20)
+        option.set("None")
 
         # Add some demo buttons
         ttk.Button(
@@ -183,4 +223,8 @@ class Demo(ttk.Window):
 
 if __name__ == "__main__":
     app = Demo()
+
+    preview_frame = ctk.CTkFrame(app, fg_color="transparent")
+    preview_frame.pack(fill="both", expand=True)
+
     app.mainloop()
