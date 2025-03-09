@@ -11,7 +11,7 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from devopsnextgenx.components.StatusBar import StatusBar
 from devopsnextgenx.components.Table import Table, Header, WidgetType
-from devopsnextgenx.components.messageHub import Alert
+from devopsnextgenx.components.messageHub import Alert, Banner, Notification
 from devopsnextgenx.utils import get_icon_path
 
 closeDark = get_icon_path("close", "dark")
@@ -23,18 +23,27 @@ else:
 
 def alert():
     alertx = Alert(state="info", title="Title", body_text="How do I get to top on AI?", btn1="Ok", btn2="Cancel")
+
+def banner():
+    bannerx = Banner(master=preview_frame, state="info", title="Title",
+                          btn1="Action 1", btn2="Action 2", side="right_bottom")
+
+def notification():
+    Notification(master=preview_frame, state="info", message="message", side="right_bottom")
+
+
 WIDGETS = {
     "Alert": alert,
-        #    "Banner": banner,
-        #    "Notification": notification,
-        #    "Card": card,
-        #    "Carousel": carousel,
-        #    "Input1": ctk_input_1,
-        #    "Input2": ctk_input_2,
-        #    "Loader": loader,
-        #    "PopupMenu": ctk_popup,
-        #    "ProgressPopup": progress_popup,
-        #    "Treeview": treeview
+    "Banner": banner,
+    "Notification": notification,
+#    "Card": card,
+#    "Carousel": carousel,
+#    "Input1": ctk_input_1,
+#    "Input2": ctk_input_2,
+#    "Loader": loader,
+#    "PopupMenu": ctk_popup,
+#    "ProgressPopup": progress_popup,
+#    "Treeview": treeview
 }
 
 
@@ -56,7 +65,7 @@ class Demo(ttk.Window):
         main_frame = ttk.Frame(self)
         main_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
-        options = ["Alert"]
+        options = ["Alert", "Banner", "Notification"]
         option = ctk.CTkOptionMenu(main_frame, values=options, width=200, command=toggle_widgets)
         option.pack(pady=20)
         option.set("None")
