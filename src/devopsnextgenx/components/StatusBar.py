@@ -20,42 +20,40 @@ class StatusBar(ttk.Frame):
         
         self.progress_thickness = progress_thickness
         
-        self.label_width_ratio = 15
-        self.user_width_ratio = 3
-        self.access_width_ratio = 1
-        self.progress_width_ratio = 5
-        self.total_width = (self.label_width_ratio + self.user_width_ratio +
-                            self.access_width_ratio + self.progress_width_ratio)
+        self.grid_columnconfigure(1, weight=12)
+        self.grid_columnconfigure(2, weight=1)
+        self.grid_columnconfigure(3, weight=0)
+        self.grid_columnconfigure(4, weight=2)
         
         self.progress_label = ttk.Label(
             self,
             text="Ready",
             anchor="w",
             padding=(10, 0),
-            # bootstyle="inverse-dark"
+            bootstyle="inverse-dark"
         )
-        self.progress_label.pack(side="left", fill="both", expand=True, padx=(0, 2))
+        self.progress_label.grid(row=0, column=1, sticky="ew", padx=(0, 2))
         
         self.user_label = ttk.Label(self,
             text="User", 
-            # bootstyle="inverse-dark"
+            bootstyle="inverse-dark"
         )
-        self.user_label.pack(side="left", fill="y", padx=(0, 2))
+        self.user_label.grid(row=0, column=2, sticky="ew", padx=(0, 2))
         
         self.access_label = ttk.Label(self,
             text="RW",
-            # bootstyle="inverse-dark"
+            bootstyle="inverse-dark"
         )
-        self.access_label.pack(side="left", fill="y", padx=(0, 2))
+        self.access_label.grid(row=0, column=3, sticky="ew", padx=(0, 2))
         
         self.progress_frame = ttk.Frame(self, height=self.progress_thickness, bootstyle="dark")
-        self.progress_frame.pack(side="left", fill="x", expand=True, padx=(5, 10), pady=(10, 10))
-        style = ttk.Style()
-        style.configure(
+        self.progress_frame.grid(row=0, column=4, sticky="ew", padx=(5, 10), pady=(10, 10))
+        progressStyle = ttk.Style()
+        progressStyle.configure(
             "Custom.Horizontal.TProgressbar",
             thickness=self.progress_thickness,
             troughcolor="#333333",
-            background="#007BFF",
+            background="#00FF00",
             troughrelief="flat",
         )
         self.progress_bar = ttk.Progressbar(
@@ -77,14 +75,19 @@ class StatusBar(ttk.Frame):
         self.on_resize(None)
 
     def on_resize(self, event):
-        frame_width = self.winfo_width() if event is None else event.width
-        usable_width = frame_width * 0.95
+        pass
+        # frame_width = self.winfo_width() if event is None else event.width
+        # usable_width = frame_width * 0.95
+        # print("Frame width:", usable_width)
+        # print("Label width:", int(self.label_width_ratio * usable_width / self.total_width))
         
-        self.user_label.configure(width=max(5, int((self.user_width_ratio/self.total_width) * usable_width / 10)))
-        self.access_label.configure(width=max(2, int((self.access_width_ratio/self.total_width) * usable_width / 10)))
-        
-        progress_width = max(100, int((self.progress_width_ratio/self.total_width) * usable_width))
-        self.progress_bar.configure(length=progress_width)
+        # self.progress_label.configure(width=50)
+        # self.user_label.configure(width=int(self.user_width_ratio * usable_width / self.total_width))
+        # self.access_label.configure(width= int(self.access_width_ratio * usable_width / self.total_width))
+        # progress_width = int(self.progress_width_ratio * usable_width / self.total_width)
+        # print("Progress width:", progress_width)
+        # self.progress_frame.configure(width=progress_width)
+        # self.progress_bar.configure(length=progress_width)
 
     def update_status(self, text, progress=None):
         """
@@ -95,6 +98,24 @@ class StatusBar(ttk.Frame):
         self.progress_label.configure(text=text)
         if progress is not None:
             self.progress_bar["value"] = progress * 100
+            
+            # Update progress bar color based on progress value
+            if progress < 0.3:
+                color = "#FF0000"  # Red
+            elif 0.3 <= progress <= 0.7:
+                color = "#0000FF"  # Blue
+            else:
+                color = "#00FF00"  # Green
+            
+            progressStyle = ttk.Style()
+            progressStyle.configure(
+                "Custom.Horizontal.TProgressbar",
+                thickness=self.progress_thickness,
+                troughcolor="#333333",
+                background=color,
+                troughrelief="flat",
+            )
+            
             self.progress_bar.update_idletasks()
 
     def reset(self):
