@@ -12,7 +12,7 @@ from ttkbootstrap.constants import *
 from devopsnextgenx.components.StatusBar import StatusBar
 from devopsnextgenx.components.Table import Table, Header, WidgetType
 from devopsnextgenx.components.messageHub import Alert, Banner, Notification
-from devopsnextgenx.components.Carousel import Carousel
+from devopsnextgenx.components.Carousel import Carousel, image_list_provider
 from devopsnextgenx.utils import get_icon_path
 
 closeDark = get_icon_path("close", "dark")
@@ -206,7 +206,10 @@ class Demo(ttk.Window):
         # Add carousel to display images
         self.carouselFrame = ttk.Frame(parent)
         self.carouselFrame.pack(fill="both", expand=True, pady=10)
-        self.carousel = Carousel(self.carouselFrame, img_radius=5)
+        CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
+        ICON_DIR = os.path.join(CURRENT_PATH, "imgs", "carousel")
+        imgList = image_list_provider(ICON_DIR, imgOptions = {"imgPrefix":"sun", "suffix":"png", "start":1, "end":15})
+        self.carousel = Carousel(self.carouselFrame, img_radius=5, img_list = imgList)
         self.carousel.grid(padx=20, pady=20)
         
 

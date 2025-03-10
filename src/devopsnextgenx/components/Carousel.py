@@ -1,9 +1,11 @@
-import sys
+import os
 import customtkinter as ctk
 from PIL import Image, ImageDraw
 from devopsnextgenx.utils import set_opacity, ICON_BTN
 from devopsnextgenx.utils.iconProvider import ICON_PATH
 
+def image_list_provider(ICON_DIR, imgOptions = {"imgPrefix":"sun", "suffix":".png", "start":1, "end":15}):
+    return list(os.path.join(ICON_DIR, f"{imgOptions['imgPrefix']}{i}.{imgOptions['suffix']}") for i in range(imgOptions['start'], imgOptions['end']))
 
 class Carousel(ctk.CTkFrame):
     def __init__(self, master: any, img_list=None, width=None, height=None, img_radius=5, **kwargs):
