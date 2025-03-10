@@ -1,8 +1,7 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 import customtkinter as ctk
-from devopsnextgenx.components.messageHub.Alert import Alert
-from devopsnextgenx.components.messageHub.provider import set_root_frame
+from devopsnextgenx.components.messageHub.provider import set_root_frame, show_alert
 
 
 class StatusBar(ttk.Frame):
@@ -133,13 +132,11 @@ class StatusBar(ttk.Frame):
 
     def show_user_alert(self, event):
         """Show an alert with the user name."""
-        alert = Alert(state="info", title="User Info", body_text=f"User: {self.user_label.cget('text')}")
-        alert.get()
+        show_alert(state="info", title="User Info", body_text=f"User: {self.user_label.cget('text')}")
 
     def show_access_alert(self, event):
         """Show an alert with the access information."""
-        alert = Alert(state="info", title="Access Info", body_text=f"Access: {self.access_label.cget('text')}")
-        alert.get()
+        show_alert(state="info", title="Access Info", body_text=f"Access: {self.access_label.cget('text')}")
 
 
 if __name__ == "__main__":

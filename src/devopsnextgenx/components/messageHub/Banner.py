@@ -72,6 +72,9 @@ class Banner(ctk.CTkFrame):
         self.event = event
 
     def update_progress_bar(self):
+        if not self.winfo_exists():
+            return
+
         current_time = time.time()
         elapsed_time = current_time - self.start_time
         elapsed_time = max(1, elapsed_time)  # Ensure elapsed_time is at least 1 second

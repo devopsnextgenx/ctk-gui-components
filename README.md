@@ -157,15 +157,12 @@ table.pack(fill="both", expand=True)
 
 ```python
 import customtkinter as ctk
-from devopsnextgenx.components.messageHub import Alert
+from devopsnextgenx.components.messageHub import provider
 
 app = ctk.CTk()
+provider.set_root_frame(app)
 
-def show_alert():
-    alert = Alert(state="info", title="Information", body_text="This is an alert message.", btn1="OK", btn2="Cancel")
-    alert.get()
-
-button = ctk.CTkButton(app, text="Show Alert", command=show_alert)
+button = ctk.CTkButton(app, text="Show Alert", command=lambda: provider.show_alert("info", "Information", "This is an alert message.", "OK", "Cancel"))
 button.pack(pady=20)
 
 app.mainloop()
@@ -175,12 +172,13 @@ app.mainloop()
 
 ```python
 import customtkinter as ctk
-from devopsnextgenx.components.messageHub import Banner
+from devopsnextgenx.components.messageHub import provider
 
 app = ctk.CTk()
+provider.set_root_frame(app)
 
-banner = Banner(master=app, state="info", title="Information", btn1="Action 1", btn2="Action 2", side="right_bottom")
-banner.pack(pady=20)
+button = ctk.CTkButton(app, text="Show Banner", command=lambda: provider.show_banner("info", "Information", "right_bottom", "Action 1", "Action 2"))
+button.pack(pady=20)
 
 app.mainloop()
 ```
@@ -189,12 +187,13 @@ app.mainloop()
 
 ```python
 import customtkinter as ctk
-from devopsnextgenx.components.messageHub import Notification
+from devopsnextgenx.components.messageHub import provider
 
 app = ctk.CTk()
+provider.set_root_frame(app)
 
-notification = Notification(master=app, state="info", message="This is a notification.", side="right_bottom")
-notification.pack(pady=20)
+button = ctk.CTkButton(app, text="Show Notification", command=lambda: provider.show_notification("info", "This is a notification.", "right_bottom"))
+button.pack(pady=20)
 
 app.mainloop()
 ```
@@ -220,6 +219,28 @@ carousel.pack(pady=20)
 app.mainloop()
 ```
 
+### ScrollFrame Component
+
+A scrollable frame widget that allows for easy scrolling of its contents.
+
+#### ScrollFrame Example
+
+```python
+import tkinter as tk
+from devopsnextgenx.components import ScrollFrame
+
+app = tk.Tk()
+
+scroll_frame = ScrollFrame(app)
+scroll_frame.pack(fill="both", expand=True)
+
+# Add widgets to the scrollable frame
+for i in range(50):
+    tk.Label(scroll_frame.get_scrollable_frame(), text=f"Label {i}").pack()
+
+app.mainloop()
+```
+
 ## Customization
 
 Both components support extensive customization through their constructor parameters and methods:
@@ -241,61 +262,3 @@ twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
 ## License
 
 [LICENSE](https://github.com/devopsnextgenx/ctk-gui-components/blob/main/LICENSE.md)
-
-
-
-        # Create a canvas and a scrollbar
-        canvas = ctk.CTkCanvas(self)
-        scrollbar = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
-        scrollable_frame = ttk.Frame(canvas)
-        scrollable_frame.pack(fill="both", expand=True)
-
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(
-                scrollregion=canvas.bbox("all")
-            )
-        )
-
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="both")
-
-        # Create main frame inside the scrollable frame
-        # main_frame = ttk.Frame(scrollable_frame, style="TFrame", padding=10)
-        # self.style.configure("TFrame", background="#343A40")
-        # main_frame.pack(fill="both", expand=True, padx=10, pady=10)
-
-        options = ["Alert", "Banner", "Notification", "Carousel"]
-        option = ctk.CTkOptionMenu(scrollable_frame, values=options, width=200, command=toggle_widgets)
-        option.pack(pady=20)
-        option.set("None")
-
-        # Add some demo buttons
-        ttk.Button(
-            scrollable_frame, 
-            text="Start Process", 
-            command=self.simulate_process,
-            bootstyle="primary"
-        ).pack(pady=10)
-
-        ttk.Button(
-            scrollable_frame, 
-            text="Reset Status", 
-            command=self.reset_status,
-            bootstyle="secondary"
-        ).pack(pady=10)
-
-        # Add carousel to display images
-        self.carouselFrame = ttk.Frame(scrollable_frame)
-        self.carouselFrame.pack(fill="both", expand=True, pady=10)
-        CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
-        ICON_DIR = os.path.join(CURRENT_PATH, "imgs", "carousel")
-        imgList = image_list_provider(ICON_DIR, imgOptions = {"imgPrefix":"sun", "suffix":"png", "start":1, "end":15})
-        self.carousel = Carousel(self.carouselFrame, img_radius=5, img_list = imgList)
-        self.carousel.grid(padx=20, pady=20)
-        
-        # Add table for user info
-        self.add_user_info_table(scrollable_frame)

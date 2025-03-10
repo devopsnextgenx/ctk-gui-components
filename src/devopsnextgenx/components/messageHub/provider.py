@@ -7,7 +7,7 @@ def set_root_frame(rt_frame):
     global root_frame
     root_frame = rt_frame
 
-def show_alert(state, title, body_text, btn1, btn2):
+def show_alert(state, title, body_text, btn1="Ok", btn2="Cancel"):
     alertx = Alert(state=state, title=title, body_text=body_text, btn1=btn1, btn2=btn2)
 
 def show_banner(state, title, side="right_bottom", btn1=None, btn2=None):
