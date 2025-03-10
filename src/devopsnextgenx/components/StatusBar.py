@@ -16,7 +16,7 @@ class StatusBar(ttk.Frame):
         progress_thickness=3,  # Set default to a thin strip
         **kwargs
     ):
-        super().__init__(master, height=height,bootstyle="dark",relief="sunken", **kwargs)
+        super().__init__(master, height=height, bootstyle="dark", relief="sunken", **kwargs)
         
         self.progress_thickness = progress_thickness
         
