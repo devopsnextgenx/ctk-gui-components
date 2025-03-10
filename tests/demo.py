@@ -12,6 +12,7 @@ from ttkbootstrap.constants import *
 from devopsnextgenx.components.StatusBar import StatusBar
 from devopsnextgenx.components.Table import Table, Header, WidgetType
 from devopsnextgenx.components.messageHub import Alert, Banner, Notification
+from devopsnextgenx.components.Carousel import Carousel
 from devopsnextgenx.utils import get_icon_path
 
 closeDark = get_icon_path("close", "dark")
@@ -31,13 +32,16 @@ def banner():
 def notification():
     Notification(master=preview_frame, state="info", message="message", side="right_bottom")
 
+def carousel():
+    carousel = Carousel(preview_frame, img_radius=25)
+    carousel.grid(padx=20, pady=20)
 
 WIDGETS = {
     "Alert": alert,
     "Banner": banner,
     "Notification": notification,
 #    "Card": card,
-#    "Carousel": carousel,
+    "Carousel": carousel,
 #    "Input1": ctk_input_1,
 #    "Input2": ctk_input_2,
 #    "Loader": loader,
@@ -65,7 +69,7 @@ class Demo(ttk.Window):
         main_frame = ttk.Frame(self)
         main_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
-        options = ["Alert", "Banner", "Notification"]
+        options = ["Alert", "Banner", "Notification", "Carousel"]
         option = ctk.CTkOptionMenu(main_frame, values=options, width=200, command=toggle_widgets)
         option.pack(pady=20)
         option.set("None")
@@ -198,6 +202,13 @@ class Demo(ttk.Window):
 
         self.table = Table(parent, headers=headers, data=users)
         self.table.pack(fill="both", expand=True, pady=10)
+
+        # Add carousel to display images
+        self.carouselFrame = ttk.Frame(parent)
+        self.carouselFrame.pack(fill="both", expand=True, pady=10)
+        self.carousel = Carousel(self.carouselFrame, img_radius=25)
+        self.carousel.grid(padx=20, pady=20)
+        
 
     def simulate_process(self):
         """Simulate a process with progress updates"""
