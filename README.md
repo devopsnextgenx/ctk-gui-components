@@ -30,7 +30,7 @@ pytest --cov=src --cov-report=term-missing
 Run the included demo to see all components in action:
 
 ```bash
-python src/demo.py
+python tests/demo.py
 
 ffmpeg -i input.webm demo.gif
 
@@ -241,3 +241,61 @@ twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
 ## License
 
 [LICENSE](https://github.com/devopsnextgenx/ctk-gui-components/blob/main/LICENSE.md)
+
+
+
+        # Create a canvas and a scrollbar
+        canvas = ctk.CTkCanvas(self)
+        scrollbar = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+        scrollable_frame.pack(fill="both", expand=True)
+
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(
+                scrollregion=canvas.bbox("all")
+            )
+        )
+
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="both")
+
+        # Create main frame inside the scrollable frame
+        # main_frame = ttk.Frame(scrollable_frame, style="TFrame", padding=10)
+        # self.style.configure("TFrame", background="#343A40")
+        # main_frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+        options = ["Alert", "Banner", "Notification", "Carousel"]
+        option = ctk.CTkOptionMenu(scrollable_frame, values=options, width=200, command=toggle_widgets)
+        option.pack(pady=20)
+        option.set("None")
+
+        # Add some demo buttons
+        ttk.Button(
+            scrollable_frame, 
+            text="Start Process", 
+            command=self.simulate_process,
+            bootstyle="primary"
+        ).pack(pady=10)
+
+        ttk.Button(
+            scrollable_frame, 
+            text="Reset Status", 
+            command=self.reset_status,
+            bootstyle="secondary"
+        ).pack(pady=10)
+
+        # Add carousel to display images
+        self.carouselFrame = ttk.Frame(scrollable_frame)
+        self.carouselFrame.pack(fill="both", expand=True, pady=10)
+        CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
+        ICON_DIR = os.path.join(CURRENT_PATH, "imgs", "carousel")
+        imgList = image_list_provider(ICON_DIR, imgOptions = {"imgPrefix":"sun", "suffix":"png", "start":1, "end":15})
+        self.carousel = Carousel(self.carouselFrame, img_radius=5, img_list = imgList)
+        self.carousel.grid(padx=20, pady=20)
+        
+        # Add table for user info
+        self.add_user_info_table(scrollable_frame)

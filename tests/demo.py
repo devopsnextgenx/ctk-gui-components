@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import tkinter as tk  # Add this import for Canvas and Scrollbar
 
 # Add src directory to Python path
 src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
@@ -65,36 +66,64 @@ class Demo(ttk.Window):
         self.title("Component Demo")
         self.geometry("600x400")
 
-        # Create main frame
-        main_frame = ttk.Frame(self)
-        main_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        # Add status bar at the bottom
+        self.status_bar = StatusBar(self, progress_thickness=5)
+        self.status_bar.pack(fill="x", side="bottom", padx=10, pady=5)
+
+        # Create a canvas and a vertical scrollbar
+        self.canvas = tk.Canvas(self)
+        self.scrollbar = ttk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
+        self.scrollable_frame = ttk.Frame(self.canvas)
+
+        # Configure scrollable frame to resize with canvas
+        self.scrollable_frame.bind("<Configure>",
+            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
+        
+        # Bind canvas resize to adjust scrollable frame width
+        self.canvas.bind("<Configure>", 
+            lambda e: self.canvas.itemconfig(
+                "all",  # Update all canvas items (only the scrollable_frame window)
+                width=e.width
+            )
+        )
+
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw", width=self.winfo_width())
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        self.canvas.pack(side="left", fill="both", expand=True)
+        self.scrollbar.pack(side="right", fill="y")
 
         options = ["Alert", "Banner", "Notification", "Carousel"]
-        option = ctk.CTkOptionMenu(main_frame, values=options, width=200, command=toggle_widgets)
+        option = ctk.CTkOptionMenu(self.scrollable_frame, values=options, width=200, command=toggle_widgets)
         option.pack(pady=20)
         option.set("None")
 
         # Add some demo buttons
         ttk.Button(
-            main_frame, 
+            self.scrollable_frame, 
             text="Start Process", 
             command=self.simulate_process,
             bootstyle="primary"
         ).pack(pady=10)
 
         ttk.Button(
-            main_frame, 
+            self.scrollable_frame, 
             text="Reset Status", 
             command=self.reset_status,
             bootstyle="secondary"
         ).pack(pady=10)
 
+        # Add carousel to display images
+        self.carouselFrame = ttk.Frame(self.scrollable_frame)
+        self.carouselFrame.pack(fill="both", expand=True, pady=10)
+        CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
+        ICON_DIR = os.path.join(CURRENT_PATH, "imgs", "carousel")
+        imgList = image_list_provider(ICON_DIR, imgOptions = {"imgPrefix":"sun", "suffix":"png", "start":1, "end":15})
+        self.carousel = Carousel(self.carouselFrame, img_radius=5, img_list = imgList)
+        self.carousel.grid(padx=20, pady=20)
+        
         # Add table for user info
-        self.add_user_info_table(main_frame)
-
-        # Add status bar at the bottom
-        self.status_bar = StatusBar(self, progress_thickness=5)
-        self.status_bar.pack(fill="x", side="bottom", padx=10, pady=5)
+        self.add_user_info_table(self.scrollable_frame)
 
     def add_user_info_table(self, parent):
         """Add a table to display user info"""
@@ -203,15 +232,6 @@ class Demo(ttk.Window):
         self.table = Table(parent, headers=headers, data=users)
         self.table.pack(fill="both", expand=True, pady=10)
 
-        # Add carousel to display images
-        self.carouselFrame = ttk.Frame(parent)
-        self.carouselFrame.pack(fill="both", expand=True, pady=10)
-        CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
-        ICON_DIR = os.path.join(CURRENT_PATH, "imgs", "carousel")
-        imgList = image_list_provider(ICON_DIR, imgOptions = {"imgPrefix":"sun", "suffix":"png", "start":1, "end":15})
-        self.carousel = Carousel(self.carouselFrame, img_radius=5, img_list = imgList)
-        self.carousel.grid(padx=20, pady=20)
-        
 
     def simulate_process(self):
         """Simulate a process with progress updates"""
@@ -247,7 +267,7 @@ class Demo(ttk.Window):
 if __name__ == "__main__":
     app = Demo()
 
-    preview_frame = ctk.CTkFrame(app, fg_color="transparent")
+    preview_frame = ctk.CTkFrame(app.scrollable_frame, fg_color="transparent")
     preview_frame.pack(fill="both", expand=True)
 
     app.mainloop()
