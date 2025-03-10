@@ -6,7 +6,7 @@ from devopsnextgenx.utils.iconProvider import ICON_PATH
 
 
 class Carousel(ctk.CTkFrame):
-    def __init__(self, master: any, img_list=None, width=None, height=None, img_radius=25, **kwargs):
+    def __init__(self, master: any, img_list=None, width=None, height=None, img_radius=5, **kwargs):
         if img_list is None:
             img_list = ICON_PATH["images"]
 
@@ -36,15 +36,26 @@ class Carousel(ctk.CTkFrame):
 
         self.previous_button = ctk.CTkButton(self.image_label, text="", image=self.prev_icon, **ICON_BTN,
                                              command=self.previous_callback, bg_color=self.button_bg)
-        self.previous_button.place(relx=0.0, rely=0.5, anchor='w')
-        set_opacity(self.previous_button.winfo_id(), color=self.button_bg[0])
+        self.previous_button.place(relx=0.0, rely=0.5, anchor='w')  # Adjusted position
+        set_opacity(self.previous_button.winfo_id(), color=self.button_bg[0])  # Increased transparency
+        # set_opacity(self.previous_button.winfo_id(), color=self.button_bg[0], alpha=0.2)  # Increased transparency
 
         self.next_button = ctk.CTkButton(self.image_label, text="", image=self.next_icon, **ICON_BTN,
                                          command=self.next_callback, bg_color=self.button_bg)
-        self.next_button.place(relx=1.0, rely=0.5, anchor='e')
-        set_opacity(self.next_button.winfo_id(), color=self.button_bg[0])
+        self.next_button.place(relx=1.0, rely=0.5, anchor='e')  # Adjusted position
+        set_opacity(self.next_button.winfo_id(), color=self.button_bg[0])  # Increased transparency
+        # set_opacity(self.next_button.winfo_id(), color=self.button_bg[0], alpha=0.2)  # Increased transparency
+
+        self.bind("<Left>", lambda event: self.previous_callback())
+        self.bind("<Right>", lambda event: self.next_callback())
+        self.focus_set()
+
+        self.image_label.bind("<Button-1>", self.set_focus)
 
         self.next_callback()
+
+    def set_focus(self, event=None):
+        self.focus_set()
 
     def get_dimensions(self):
         max_width, max_height = 0, 0

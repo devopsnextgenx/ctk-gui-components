@@ -206,7 +206,7 @@ class Demo(ttk.Window):
         # Add carousel to display images
         self.carouselFrame = ttk.Frame(parent)
         self.carouselFrame.pack(fill="both", expand=True, pady=10)
-        self.carousel = Carousel(self.carouselFrame, img_radius=25)
+        self.carousel = Carousel(self.carouselFrame, img_radius=5)
         self.carousel.grid(padx=20, pady=20)
         
 

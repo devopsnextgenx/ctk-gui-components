@@ -5,7 +5,7 @@ CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 ICON_DIR = os.path.join(CURRENT_PATH, "icons")
 ICON_PATH = {
     "close": (os.path.join(ICON_DIR, "close_black.png"), os.path.join(ICON_DIR, "close_white.png")),
-    "images": list(os.path.join(ICON_DIR, f"sun{i}.png") for i in range(1, 6)),
+    "images": list(os.path.join(ICON_DIR, f"sun{i}.png") for i in range(1, 15)),
     "eye1": (os.path.join(ICON_DIR, "eye1_black.png"), os.path.join(ICON_DIR, "eye1_white.png")),
     "eye2": (os.path.join(ICON_DIR, "eye2_black.png"), os.path.join(ICON_DIR, "eye2_white.png")),
     "info": os.path.join(ICON_DIR, "info.png"),
