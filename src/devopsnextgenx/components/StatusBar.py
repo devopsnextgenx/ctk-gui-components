@@ -75,19 +75,8 @@ class StatusBar(ttk.Frame):
         self.on_resize(None)
 
     def on_resize(self, event):
+        # Intentionally left empty to handle resize events
         pass
-        # frame_width = self.winfo_width() if event is None else event.width
-        # usable_width = frame_width * 0.95
-        # print("Frame width:", usable_width)
-        # print("Label width:", int(self.label_width_ratio * usable_width / self.total_width))
-        
-        # self.progress_label.configure(width=50)
-        # self.user_label.configure(width=int(self.user_width_ratio * usable_width / self.total_width))
-        # self.access_label.configure(width= int(self.access_width_ratio * usable_width / self.total_width))
-        # progress_width = int(self.progress_width_ratio * usable_width / self.total_width)
-        # print("Progress width:", progress_width)
-        # self.progress_frame.configure(width=progress_width)
-        # self.progress_bar.configure(length=progress_width)
 
     def update_status(self, text, progress=None):
         """
