@@ -67,27 +67,30 @@ class Demo(ttk.Window):
         # Use ScrollFrame component
         self.scroll_frame = ScrollFrame(self)
         self.scrollable_frame = self.scroll_frame.get_scrollable_frame()
-        self.scroll_frame.pack(side="left", fill="both", expand=True)
+        self.scroll_frame.pack(side="top", fill="both", expand=True)
+
+        # Create a frame to hold the option menu and buttons
+        button_frame = ttk.Frame(self.scrollable_frame)
+        button_frame.pack(side="top", pady=20, fill="x")
 
         options = ["Alert", "Banner", "Notification"]
-        option = ctk.CTkOptionMenu(self.scrollable_frame, values=options, width=200, command=toggle_widgets)
-        option.pack(pady=20)
+        option = ctk.CTkOptionMenu(button_frame, values=options, width=200, command=toggle_widgets)
+        option.pack(side="left", padx=5)
         option.set("None")
 
-        # Add some demo buttons
         ttk.Button(
-            self.scrollable_frame, 
+            button_frame, 
             text="Start Process", 
             command=self.simulate_process,
             bootstyle="primary"
-        ).pack(pady=10)
+        ).pack(side="left", padx=5)
 
         ttk.Button(
-            self.scrollable_frame, 
+            button_frame, 
             text="Reset Status", 
             command=self.reset_status,
             bootstyle="secondary"
-        ).pack(pady=10)
+        ).pack(side="left", padx=5)
 
         # Add carousel to display images
         self.carouselFrame = ttk.Frame(self.scrollable_frame)
