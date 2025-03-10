@@ -4,7 +4,7 @@ from devopsnextgenx.utils import place_frame
 from devopsnextgenx.utils.iconProvider import ICON_PATH
 
 class Notification(ctk.CTkFrame):
-    def __init__(self, master, state: str = "info", message: str = "message", side: str = "right_bottom"):
+    def __init__(self, master, state: str = "info", message: str = "message", side: str = "right_bottom", destroy_delay: int = 10000):
         self.root = master
         self.width = 400
         self.height = 60
@@ -32,6 +32,8 @@ class Notification(ctk.CTkFrame):
 
         place_frame(self.root, self, self.horizontal, self.vertical)
         self.root.bind("<Configure>", self.update_position, add="+")
+
+        self.after(destroy_delay, self.close_notification)
 
     def update_position(self, event):
         place_frame(self.root, self, self.horizontal, self.vertical)

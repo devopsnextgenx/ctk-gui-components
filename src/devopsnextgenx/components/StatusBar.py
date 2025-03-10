@@ -2,6 +2,8 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 import customtkinter as ctk
 from devopsnextgenx.components.messageHub.Alert import Alert
+from devopsnextgenx.components.messageHub.provider import set_root_frame
+
 
 class StatusBar(ttk.Frame):
     """
@@ -18,7 +20,7 @@ class StatusBar(ttk.Frame):
         **kwargs
     ):
         super().__init__(master, height=height, bootstyle="dark", relief="sunken", **kwargs)
-        
+        set_root_frame(master)
         self.progress_thickness = progress_thickness
         
         self.grid_columnconfigure(1, weight=12)

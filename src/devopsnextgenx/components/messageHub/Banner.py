@@ -1,3 +1,4 @@
+import time
 import customtkinter as ctk
 from PIL import Image
 from devopsnextgenx.utils import place_frame
@@ -6,7 +7,7 @@ from devopsnextgenx.utils import LINK_BTN
 
 class Banner(ctk.CTkFrame):
     def __init__(self, master, state: str = "info", title: str = "Title", btn1: str = "Action A",
-                 btn2: str = "Action B", side: str = "right_bottom"):
+                 btn2: str = "Action B", side: str = "right_bottom", destroy_delay: int = 10000):
         self.root = master
         self.width = 400
         self.height = 100
@@ -40,8 +41,19 @@ class Banner(ctk.CTkFrame):
                                    command=lambda: self.button_event(btn2))
         self.btn_2.grid(row=1, column=1, padx=5, pady=10, sticky="w")
 
+        # Add progress bar
+        self.progress_bar = ctk.CTkProgressBar(self, width=self.width - 20)
+        self.progress_bar.grid(row=2, column=0, columnspan=2, padx=10, pady=(0, 10), sticky="ew")
+        self.progress_bar.set(1.0)  # Set initial progress to 100%
+
         place_frame(self.root, self, self.horizontal, self.vertical)
         self.root.bind("<Configure>", self.update_position, add="+")
+
+        # Schedule the banner to be destroyed after the specified delay
+        self.destroy_delay = destroy_delay
+        self.start_time = time.time()
+        self.update_progress_bar()
+        self.root.after(destroy_delay, self.button_event)
 
     def update_position(self, event):
         place_frame(self.root, self, self.horizontal, self.vertical)
@@ -58,3 +70,21 @@ class Banner(ctk.CTkFrame):
         self.grab_release()
         self.destroy()
         self.event = event
+
+    def update_progress_bar(self):
+        current_time = time.time()
+        elapsed_time = current_time - self.start_time
+        elapsed_time = max(1, elapsed_time)  # Ensure elapsed_time is at least 1 second
+        progress = (elapsed_time * 1000) / self.destroy_delay
+
+        if progress < 0.3:
+            self.progress_bar.configure(fg_color="green")
+        elif 0.3 <= progress < 0.7:
+            self.progress_bar.configure(fg_color="blue")
+        else:
+            self.progress_bar.configure(fg_color="red")
+
+        if progress < 1:
+            self.progress_bar.set(progress)
+        if progress > 0:
+            self.root.after(1000, self.update_progress_bar)

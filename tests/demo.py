@@ -9,12 +9,13 @@ sys.path.append(src_path)
 
 import customtkinter as ctk
 import ttkbootstrap as ttk
-from ttkbootstrap.constants import *
+from ttkbootstrap.constants import PRIMARY, SECONDARY, INFO
+from devopsnextgenx.utils import get_icon_path
 from devopsnextgenx.components.StatusBar import StatusBar
 from devopsnextgenx.components.Table import Table, Header, WidgetType
-from devopsnextgenx.components.messageHub import Alert, Banner, Notification
 from devopsnextgenx.components.Carousel import Carousel, image_list_provider
-from devopsnextgenx.utils import get_icon_path
+from devopsnextgenx.components.ScrollFrame import ScrollFrame
+from devopsnextgenx.components.messageHub.provider import show_alert, show_banner, show_notification
 
 closeDark = get_icon_path("close", "dark")
 print(f"Icon path for 'close' icon in dark theme: {closeDark}")
@@ -24,25 +25,19 @@ else:
     print("Icon file not found!")
 
 def alert():
-    alertx = Alert(state="info", title="Title", body_text="How do I get to top on AI?", btn1="Ok", btn2="Cancel")
+    alertx = show_alert(state="info", title="Title", body_text="How do I get to top on AI?", btn1="Ok", btn2="Cancel")
 
 def banner():
-    bannerx = Banner(master=preview_frame, state="info", title="Title",
-                          btn1="Action 1", btn2="Action 2", side="right_bottom")
+    bannerx = show_banner(state="info", title="Title")
 
 def notification():
-    Notification(master=preview_frame, state="info", message="message", side="right_bottom")
-
-def carousel():
-    carousel = Carousel(preview_frame, img_radius=25)
-    carousel.grid(padx=20, pady=20)
+    notificationx = show_notification(state="info", message="message", side="right_top")
 
 WIDGETS = {
     "Alert": alert,
     "Banner": banner,
     "Notification": notification,
 #    "Card": card,
-    "Carousel": carousel,
 #    "Input1": ctk_input_1,
 #    "Input2": ctk_input_2,
 #    "Loader": loader,
@@ -53,9 +48,6 @@ WIDGETS = {
 
 
 def toggle_widgets(widget):
-    for widgets in preview_frame.winfo_children():
-        widgets.destroy()
-
     var = WIDGETS[widget]
     var()
 
@@ -72,30 +64,12 @@ class Demo(ttk.Window):
         self.status_bar.update_user("Amit")
         self.status_bar.update_access("Admin")
 
-        # Create a canvas and a vertical scrollbar
-        self.canvas = tk.Canvas(self)
-        self.scrollbar = ttk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
-        self.scrollable_frame = ttk.Frame(self.canvas)
+        # Use ScrollFrame component
+        self.scroll_frame = ScrollFrame(self)
+        self.scrollable_frame = self.scroll_frame.get_scrollable_frame()
+        self.scroll_frame.pack(side="left", fill="both", expand=True)
 
-        # Configure scrollable frame to resize with canvas
-        self.scrollable_frame.bind("<Configure>",
-            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
-        
-        # Bind canvas resize to adjust scrollable frame width
-        self.canvas.bind("<Configure>", 
-            lambda e: self.canvas.itemconfig(
-                "all",  # Update all canvas items (only the scrollable_frame window)
-                width=e.width
-            )
-        )
-
-        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw", width=self.winfo_width())
-        self.canvas.configure(yscrollcommand=self.scrollbar.set)
-
-        self.canvas.pack(side="left", fill="both", expand=True)
-        self.scrollbar.pack(side="right", fill="y")
-
-        options = ["Alert", "Banner", "Notification", "Carousel"]
+        options = ["Alert", "Banner", "Notification"]
         option = ctk.CTkOptionMenu(self.scrollable_frame, values=options, width=200, command=toggle_widgets)
         option.pack(pady=20)
         option.set("None")
@@ -278,9 +252,4 @@ class Demo(ttk.Window):
 
 if __name__ == "__main__":
     app = Demo()
-
-    # Customize the preview_frame with border color and thickness
-    preview_frame = ctk.CTkFrame(app.scrollable_frame, fg_color="transparent", border_color="black", border_width=2)
-    preview_frame.pack(fill="both", expand=True)
-
     app.mainloop()
