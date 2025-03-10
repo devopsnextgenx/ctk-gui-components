@@ -20,6 +20,8 @@ pip install -r requirements.txt
 
 ## Test and Coverage
 ```bash
+pytest tests/devopsnextgenx/utils/test_style.py
+pytest tests/devopsnextgenx/utils/test_style.py::test_change_title_color_initialization
 pytest --cov=src --cov-report=term-missing
 ```
 

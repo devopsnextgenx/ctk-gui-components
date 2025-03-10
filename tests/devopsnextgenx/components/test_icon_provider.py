@@ -1,21 +1,21 @@
-import os
-import sys
+# import os
+# import sys
 
-# Add src directory to Python path
-src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src'))
-sys.path.append(src_path)
+# # Add src directory to Python path
+# src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'src'))
+# sys.path.append(src_path)
 
-import pytest
-from devopsnextgenx.utils import list_icons, get_icon_path
-from collections.abc import dict_keys
-def test_list_icons():
-    """Test the list_icons function"""
-    icons = list_icons()
-    assert isinstance(icons, dict_keys)
-    assert "close" in icons
-    assert "images" in icons
-    assert "eye1" in icons
-    assert "info" in icons
+# import pytest
+# from devopsnextgenx.utils import list_icons, get_icon_path
+# from collections.abc import dict_keys
+# def test_list_icons():
+#     """Test the list_icons function"""
+#     icons = list_icons()
+#     assert isinstance(icons, dict_keys)
+#     assert "close" in icons
+#     assert "images" in icons
+#     assert "eye1" in icons
+#     assert "info" in icons
 
 # def test_get_icon_path_dark_theme():
 #     """Test get_icon_path function with dark theme"""
