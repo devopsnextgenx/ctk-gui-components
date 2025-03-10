@@ -81,7 +81,7 @@ class Banner(ctk.CTkFrame):
         progress = (elapsed_time * 1000) / self.destroy_delay
 
         if progress < 0.3:
-            self.progress_bar.configure(fg_color="green")
+            self.progress_bar.configure(fg_color="#00FF00")
         elif 0.3 <= progress < 0.7:
             self.progress_bar.configure(fg_color="blue")
         else:
