@@ -31,6 +31,9 @@ Run the included demo to see all components in action:
 
 ```bash
 python src/demo.py
+
+ffmpeg -i input.webm demo.gif
+
 ```
 
 ![demo.gif](https://raw.githubusercontent.com/devopsnextgenx/ctk-gui-components/refs/heads/main/docs/imgs/demo.gif)
@@ -146,6 +149,75 @@ table = Table(
     hover_color="#404040"
 )
 table.pack(fill="both", expand=True)
+```
+
+### MessageHub Components
+
+#### Alert Example
+
+```python
+import customtkinter as ctk
+from devopsnextgenx.components.messageHub import Alert
+
+app = ctk.CTk()
+
+def show_alert():
+    alert = Alert(state="info", title="Information", body_text="This is an alert message.", btn1="OK", btn2="Cancel")
+    alert.get()
+
+button = ctk.CTkButton(app, text="Show Alert", command=show_alert)
+button.pack(pady=20)
+
+app.mainloop()
+```
+
+#### Banner Example
+
+```python
+import customtkinter as ctk
+from devopsnextgenx.components.messageHub import Banner
+
+app = ctk.CTk()
+
+banner = Banner(master=app, state="info", title="Information", btn1="Action 1", btn2="Action 2", side="right_bottom")
+banner.pack(pady=20)
+
+app.mainloop()
+```
+
+#### Notification Example
+
+```python
+import customtkinter as ctk
+from devopsnextgenx.components.messageHub import Notification
+
+app = ctk.CTk()
+
+notification = Notification(master=app, state="info", message="This is a notification.", side="right_bottom")
+notification.pack(pady=20)
+
+app.mainloop()
+```
+
+### Carousel Component
+
+A customizable carousel widget that displays a series of images.
+
+#### Carousel Example
+
+```python
+import customtkinter as ctk
+from devopsnextgenx.components import Carousel, image_list_provider
+
+app = ctk.CTk()
+
+# Provide a list of image paths
+image_paths = image_list_provider("path/to/images", imgOptions={"imgPrefix":"image", "suffix":"png", "start":1, "end":5})
+
+carousel = Carousel(app, img_radius=25, img_list=image_paths)
+carousel.pack(pady=20)
+
+app.mainloop()
 ```
 
 ## Customization
