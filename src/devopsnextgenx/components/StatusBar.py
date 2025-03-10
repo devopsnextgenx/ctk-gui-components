@@ -1,6 +1,7 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 import customtkinter as ctk
+from devopsnextgenx.components.messageHub.Alert import Alert
 
 class StatusBar(ttk.Frame):
     """
@@ -43,6 +44,7 @@ class StatusBar(ttk.Frame):
             borderwidth=2     # Set border width
         )
         self.user_label.grid(row=0, column=2, sticky="ew", padx=(5, 2))
+        self.user_label.bind("<Double-1>", self.show_user_alert)  # Bind double-click event
         
         self.access_label = ttk.Label(self,
             text=" RW ",
@@ -51,6 +53,7 @@ class StatusBar(ttk.Frame):
             borderwidth=2     # Set border width
         )
         self.access_label.grid(row=0, column=3, sticky="ew", padx=(5, 2))
+        self.access_label.bind("<Double-1>", self.show_access_alert)  # Bind double-click event
         
         self.progress_frame = ttk.Frame(self, height=self.progress_thickness, bootstyle="dark", relief="sunken", borderwidth=2)  # Add bevel border
         self.progress_frame.grid(row=0, column=4, sticky="ew", padx=(5, 10), pady=(8, 8))
@@ -117,6 +120,24 @@ class StatusBar(ttk.Frame):
         """Reset the status bar to its initial state."""
         self.progress_label.configure(text="Ready")
         self.progress_bar["value"] = 0
+
+    def update_user(self, user_text):
+        """Update the user label text."""
+        self.user_label.configure(text=user_text)
+
+    def update_access(self, access_text):
+        """Update the access label text."""
+        self.access_label.configure(text=access_text)
+
+    def show_user_alert(self, event):
+        """Show an alert with the user name."""
+        alert = Alert(state="info", title="User Info", body_text=f"User: {self.user_label.cget('text')}")
+        alert.get()
+
+    def show_access_alert(self, event):
+        """Show an alert with the access information."""
+        alert = Alert(state="info", title="Access Info", body_text=f"Access: {self.access_label.cget('text')}")
+        alert.get()
 
 
 if __name__ == "__main__":

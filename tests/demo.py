@@ -69,6 +69,8 @@ class Demo(ttk.Window):
         # Add status bar at the bottom
         self.status_bar = StatusBar(self, progress_thickness=5)
         self.status_bar.pack(fill="x", side="bottom", padx=10, pady=5)
+        self.status_bar.update_user("Amit")
+        self.status_bar.update_access("Admin")
 
         # Create a canvas and a vertical scrollbar
         self.canvas = tk.Canvas(self)
