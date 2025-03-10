@@ -16,7 +16,7 @@ class StatusBar(ttk.Frame):
         progress_thickness=3,  # Set default to a thin strip
         **kwargs
     ):
-        super().__init__(master, height=height, **kwargs)
+        super().__init__(master, height=height,bootstyle="dark",relief="sunken", **kwargs)
         
         self.progress_thickness = progress_thickness
         
@@ -30,24 +30,30 @@ class StatusBar(ttk.Frame):
             text="Ready",
             anchor="w",
             padding=(10, 0),
-            bootstyle="inverse-dark"
+            bootstyle="inverse-dark",
+            relief="sunken",  # Add bevel border
+            borderwidth=2     # Set border width
         )
-        self.progress_label.grid(row=0, column=1, sticky="ew", padx=(0, 2))
+        self.progress_label.grid(row=0, column=1, sticky="ew", padx=(5, 2))
         
         self.user_label = ttk.Label(self,
             text="User", 
-            bootstyle="inverse-dark"
+            bootstyle="inverse-dark",
+            relief="sunken",  # Add bevel border
+            borderwidth=2     # Set border width
         )
-        self.user_label.grid(row=0, column=2, sticky="ew", padx=(0, 2))
+        self.user_label.grid(row=0, column=2, sticky="ew", padx=(5, 2))
         
         self.access_label = ttk.Label(self,
-            text="RW",
-            bootstyle="inverse-dark"
+            text=" RW ",
+            bootstyle="inverse-dark",
+            relief="sunken",  # Add bevel border
+            borderwidth=2     # Set border width
         )
-        self.access_label.grid(row=0, column=3, sticky="ew", padx=(0, 2))
+        self.access_label.grid(row=0, column=3, sticky="ew", padx=(5, 2))
         
-        self.progress_frame = ttk.Frame(self, height=self.progress_thickness, bootstyle="dark")
-        self.progress_frame.grid(row=0, column=4, sticky="ew", padx=(5, 10), pady=(10, 10))
+        self.progress_frame = ttk.Frame(self, height=self.progress_thickness, bootstyle="dark", relief="sunken", borderwidth=2)  # Add bevel border
+        self.progress_frame.grid(row=0, column=4, sticky="ew", padx=(5, 10), pady=(8, 8))
         progressStyle = ttk.Style()
         progressStyle.configure(
             "Custom.Horizontal.TProgressbar",

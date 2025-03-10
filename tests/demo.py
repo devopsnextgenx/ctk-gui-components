@@ -132,7 +132,8 @@ class Demo(ttk.Window):
             text="Name", 
             editable=True, 
             weight=1,
-            on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}")
+            on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}"),
+            style="Bevel.TLabel"
         )
         header3 = Header(
             text="Age", 
@@ -141,7 +142,8 @@ class Demo(ttk.Window):
             font_size=14, 
             weight=1, 
             align="right",
-            action=self.sort_by_age
+            action=self.sort_by_age,
+            style="Bevel.TLabel"
         )
         header4 = Header(
             text="Email", 
@@ -151,7 +153,8 @@ class Demo(ttk.Window):
             font_size=14, 
             weight=5, 
             align="center",
-            action=self.sort_by_email
+            action=self.sort_by_email,
+            style="Bevel.TLabel"
         )
         header5 = Header(
             text="Active", 
@@ -161,7 +164,8 @@ class Demo(ttk.Window):
             bg_color="#000000",
             font_size=14,
             weight=1,
-            on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}")
+            on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}"),
+            style="Bevel.TLabel"
         )
         header6 = Header(
             text="Notify", 
@@ -171,7 +175,8 @@ class Demo(ttk.Window):
             bg_color="#000000",
             font_size=14,
             weight=1,
-            on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}")
+            on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}"),
+            style="Bevel.TLabel"
         )
         header7 = Header(
             text="isPremium", 
@@ -181,7 +186,8 @@ class Demo(ttk.Window):
             bg_color="#000000",
             font_size=14,
             weight=1,
-            on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}")
+            on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}"),
+            style="Bevel.TLabel"
         )
         header8 = Header(
             text="isBlocked", 
@@ -191,7 +197,8 @@ class Demo(ttk.Window):
             bg_color="#000000",
             font_size=14,
             weight=1,
-            on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}")
+            on_change=lambda data, row, col: print(f"Changed cell ({row},{col}) to {data[row][col]}"),
+            style="Bevel.TLabel"
         )
         
         # Add new header for remove button
@@ -232,6 +239,9 @@ class Demo(ttk.Window):
         self.table = Table(parent, headers=headers, data=users)
         self.table.pack(fill="both", expand=True, pady=10)
 
+        # Add style for bevel border
+        style = ttk.Style()
+        style.configure("Bevel.TLabel", relief="raised", borderwidth=2)
 
     def simulate_process(self):
         """Simulate a process with progress updates"""
@@ -267,7 +277,8 @@ class Demo(ttk.Window):
 if __name__ == "__main__":
     app = Demo()
 
-    preview_frame = ctk.CTkFrame(app.scrollable_frame, fg_color="transparent")
+    # Customize the preview_frame with border color and thickness
+    preview_frame = ctk.CTkFrame(app.scrollable_frame, fg_color="transparent", border_color="black", border_width=2)
     preview_frame.pack(fill="both", expand=True)
 
     app.mainloop()
