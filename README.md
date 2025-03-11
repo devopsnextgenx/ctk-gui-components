@@ -36,7 +36,7 @@ ffmpeg -i input.webm demo.gif
 
 ```
 
-![demo.gif](https://raw.githubusercontent.com/devopsnextgenx/ctk-gui-components/refs/heads/main/docs/imgs/demo.gif)
+![demo.gif](https://media.githubusercontent.com/media/devopsnextgenx/ctk-gui-components/refs/heads/main/docs/imgs/demo.gif)
 
 
 ## Features
