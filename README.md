@@ -157,8 +157,6 @@ A customizable progress popup widget that includes:
 - Label
 - Message
 - Progress bar with percentage
-- Cancel button
-- Auto-resizing capabilities
 
 ```python
 import customtkinter as ctk
