@@ -2,6 +2,7 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 import customtkinter as ctk
 from devopsnextgenx.components.messageHub.provider import set_root_frame, show_alert
+from devopsnextgenx.components.ProgressPopup import ProgressPopup
 
 
 class StatusBar(ttk.Frame):
@@ -76,6 +77,7 @@ class StatusBar(ttk.Frame):
         self.progress_bar["value"] = 0
 
         self.progress_bar.pack(fill="x", expand=False)
+        self.progress_bar.bind("<Double-1>", self.show_progress_popup)  # Bind double-click event
         
         self.bind("<Configure>", self.on_resize)
         self.update_idletasks()
@@ -116,6 +118,10 @@ class StatusBar(ttk.Frame):
             )
             
             self.progress_bar.update_idletasks()
+        
+        # Update ProgressPopup if it is open
+        if hasattr(self, 'progress_popup') and self.progress_popup.winfo_exists():
+            self.progress_popup.update_status(text, progress)
 
     def reset(self):
         """Reset the status bar to its initial state."""
@@ -137,6 +143,11 @@ class StatusBar(ttk.Frame):
     def show_access_alert(self, event):
         """Show an alert with the access information."""
         show_alert(state="info", title="Access Info", body_text=f"Access: {self.access_label.cget('text')}")
+
+    def show_progress_popup(self, event):
+        """Show the ProgressPopup when the progress bar is double-clicked."""
+        self.progress_popup = ProgressPopup(self.master)
+        self.progress_popup.update_status(self.progress_label.cget("text"), self.progress_bar["value"] / 100)
 
 
 if __name__ == "__main__":

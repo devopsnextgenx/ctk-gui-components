@@ -32,7 +32,7 @@ Run the included demo to see all components in action:
 ```bash
 python tests/demo.py
 
-ffmpeg -i input.webm demo.gif
+ffmpeg -i demo.webm -vf "scale=1000:-1:flags=lanczos,fps=10" -compression_level 50 demo.gif
 
 ```
 
