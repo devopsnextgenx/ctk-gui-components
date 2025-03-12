@@ -150,6 +150,38 @@ table = Table(
 )
 table.pack(fill="both", expand=True)
 ```
+### ProgressPopup Component
+
+A customizable progress popup widget that includes:
+- Title
+- Label
+- Message
+- Progress bar with percentage
+- Cancel button
+- Auto-resizing capabilities
+
+```python
+import customtkinter as ctk
+from devopsnextgenx.components import ProgressPopup
+
+app = ctk.CTk()
+
+# Create progress popup with custom title and label
+progress_popup = ProgressPopup(
+    app,
+    title="Background Tasks",
+    label="Processing..."
+)
+progress_popup.pack(fill="both", expand=True)
+
+# Update progress to 50%
+progress_popup.update_progress(0.5)  # 50% progress
+
+# Close progress popup after 5 seconds
+app.after(5000, progress_popup.close_progress_popup)
+
+app.mainloop()
+```
 
 ### MessageHub Components
 
@@ -255,7 +287,7 @@ Both components support extensive customization through their constructor parame
 pip install setuptools wheel
 python setup.py sdist bdist_wheel
 pip install twine
-twine upload dist/*
+twine upload dist/*up
 twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
 ```
 
