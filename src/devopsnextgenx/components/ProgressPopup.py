@@ -48,8 +48,10 @@ class ProgressPopup(ctk.CTkFrame):
     def update_progress(self, progress):
         if self.cancelled:
             return "Cancelled"
+
         self.progressbar.set(progress)
         self.update_progress_bar_color(progress)
+
         # Check if the progress is complete and close the popup after 5 seconds
         if progress >= 1.0:
             self.after(5000, self.close_progress_popup)

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="ctk-gui-components",  # Unique package name
-    version="0.2.2",    # Package version
+    version="0.2.3",    # Package version
     author="Amit Kshirsagar",
     author_email="devopsnextgenx@gmail.com",
     description="A collection of custom GUI components for Python",
