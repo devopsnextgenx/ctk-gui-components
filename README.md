@@ -4,6 +4,11 @@
 
 A collection of modern, customizable GUI components built with ttkbootstrap for Python desktop applications.
 
+Supported OS:
+ - Windows
+ - Linux
+ - Mac OS X
+
 ## Installation
 
 ```bash
