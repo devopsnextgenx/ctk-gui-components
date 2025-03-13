@@ -51,16 +51,18 @@ class Treeview(ttk.Frame):
         self.img_empty = ImageTk.PhotoImage(self.im_empty, size=(15, 15))
 
         # Create custom tree indicator elements - FIX: Swap the image assignments to match open/close states
-        self.style.element_create(
-            'CustomTreeitem.indicator',
-            'image',
-            self.img_close,
-            ('user1', '!user2', self.img_close),  # This is correct now - when expanded (user1), show open image
-            ('user2', self.img_empty),
-            sticky='w',
-            width=15,
-            height=15
-        )
+        self.style.configure("Treeview", indent=15)
+        # Create custom tree indicator elements - FIXED: Proper image assignments for open/close states
+        # self.style.element_create(
+        #     'CustomTreeitem.indicator',
+        #     'image',
+        #     self.img_close,  # Default (collapsed)
+        #     ('open', self.img_open),  # When expanded - arrow pointing down
+        #     ('!open', self.img_close),  # When collapsed - arrow pointing right
+        #     sticky='w',
+        #     width=15,
+        #     height=15
+        # )
 
         # Configure tree layout
         self.style.layout(
@@ -100,6 +102,8 @@ class Treeview(ttk.Frame):
             style="primary.Treeview",
         )
         
+        self.treeview.tag_configure("open", image=self.img_open)
+        self.treeview.tag_configure("closed", image=self.img_close)
         # Set up scrollbar for treeview
         self.scrollbar = ttk.Scrollbar(self.tree_container, orient="vertical", command=self.treeview.yview)
         self.treeview.configure(yscrollcommand=self.scrollbar.set)
@@ -146,24 +150,6 @@ class Treeview(ttk.Frame):
 
         # Bind selection event
         self.treeview.bind("<<TreeviewSelect>>", self._handle_selection)
-        
-        # Add debug call to check heights after rendering
-        self.after(500, self.print_heights)
-        
-        # FIX: Add binding for tree open/close events to force indicator update
-        self.treeview.bind("<<TreeviewOpen>>", self._update_indicators)
-        self.treeview.bind("<<TreeviewClose>>", self._update_indicators)
-
-    def print_heights(self):
-        """Print the actual heights of components for debugging"""
-        print(f"Treeview height: {self.treeview.winfo_height()}")
-        print(f"Tree Container height: {self.tree_container.winfo_height()}")
-        print(f"Total Frame height: {self.winfo_height()}")
-        
-    def _update_indicators(self, event):
-        """Force update of tree indicators when items are opened/closed"""
-        # This helps ensure the indicator images are refreshed properly
-        self.treeview.update_idletasks()
 
     def _set_initial_sash_position(self):
         """Set the initial sash position after widget is visible"""
@@ -194,8 +180,9 @@ class Treeview(ttk.Frame):
     def insert_items(self, items, parent=''):
         """Insert items into treeview and start in a closed state"""
         for item in items:
+            item['open'] = False
             if isinstance(item, dict) and 'children' in item:
-                item_id = self.treeview.insert(parent, 'end', text=item[self.key], open=False)
+                item_id = self.treeview.insert(parent, 'end', text=item[self.key], tags=["closed"])
                 self.insert_items(item['children'], item_id)
             else:
                 self.treeview.insert(parent, 'end', text=item[self.key])
@@ -210,14 +197,7 @@ class Treeview(ttk.Frame):
                 if found:
                     return found
         return None
-    def _update_indicators(self, event=None):
-        """Force update of tree indicators when items are opened/closed"""
-        for item_id in self.treeview.get_children():
-            is_open = self.treeview.item(item_id, 'open')
-            new_image = self.img_open if is_open else self.img_close
-            self.treeview.item(item_id, image=new_image)
-        self.treeview.update_idletasks()
-
+    
     def _handle_selection(self, event):
         """Handle tree item selection"""
         selected_items = self.treeview.selection()
@@ -225,6 +205,19 @@ class Treeview(ttk.Frame):
             selected_item = selected_items[0]
             item_data = self.treeview.item(selected_item)
             item_name = item_data['text']
+            
+            # Toggle the item's open state in the treeview
+            current_open_state = self.treeview.item(selected_item, 'open')
+            self.treeview.item(selected_item, open=not current_open_state)
+            
+            # Update tags based on the new state
+            if not current_open_state:  # Will be opened
+                self.treeview.item(selected_item, tags=["open"])
+            else:  # Will be closed
+                self.treeview.item(selected_item, tags=["closed"])
+            
+            # Find and update the corresponding data item
             item = self._find_item(self.items, self.key, item_name)
             if item:
+                item['open'] = not current_open_state
                 self.preview_frame.update_preview(item)
