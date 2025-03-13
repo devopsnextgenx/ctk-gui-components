@@ -16,8 +16,6 @@ from devopsnextgenx.components.Table import Table, Header, WidgetType
 from devopsnextgenx.components.Carousel import Carousel, image_list_provider
 from devopsnextgenx.components.ScrollFrame import ScrollFrame
 from devopsnextgenx.components.messageHub.provider import show_alert, show_banner, show_notification
-from devopsnextgenx.components import Treeview, PreviewSide
-from EmployeeTreeDataProvider import create_org_structure
 
 closeDark = get_icon_path("close", "dark")
 print(f"Icon path for 'close' icon in dark theme: {closeDark}")
@@ -105,10 +103,6 @@ class Demo(ttk.Window):
         
         # Add table for user info
         self.add_user_info_table(self.scrollable_frame)
-
-        # Add employee tree
-        self.add_employee_tree(self.scrollable_frame)
-
 
     def add_user_info_table(self, parent):
         """Add a table to display user info"""
@@ -227,33 +221,6 @@ class Demo(ttk.Window):
         # Add style for bevel border
         style = ttk.Style()
         style.configure("Bevel.TLabel", relief="raised", borderwidth=2)
-
-    def add_employee_tree(self, parent):
-        """Add organizational tree view"""
-        org_structure = create_org_structure()
-        
-        # Convert employee structure to tree items format
-        def convert_to_tree_items(employee):
-            item = {
-                "name": employee.name,
-                "gender": employee.gender,
-                "age": employee.age,
-                "email": employee.email,
-                "designation": employee.designation,
-                "salary": employee.salary,
-                "location": employee.location,
-                "years_of_service": employee.years_of_service,
-            }
-            if employee.subordinates:
-                item["children"] = [convert_to_tree_items(sub) for sub in employee.subordinates]
-            return item
-        
-        tree_items = [convert_to_tree_items(org_structure)]
-        
-        rootFrame = ttk.Frame(parent)
-        rootFrame.pack(fill="both", expand=False, pady=10)
-        self.employee_tree = Treeview(rootFrame, items=tree_items, previewSide=PreviewSide.RIGHT)
-        self.employee_tree.pack(fill="both", expand=False, pady=10)
 
     def simulate_process(self):
         """Simulate a process with progress updates"""

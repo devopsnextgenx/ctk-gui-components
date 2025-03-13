@@ -1,6 +1,6 @@
 from devopsnextgenx.components.Carousel import Carousel
 from devopsnextgenx.components.Table import Table, Header, WidgetType
-from devopsnextgenx.components.TreeTable import Treeview
+from devopsnextgenx.components.TreeTable import Treeview, PreviewSide
 from devopsnextgenx.components.ScrollFrame import ScrollFrame
 from devopsnextgenx.components.StatusBar import StatusBar
 
