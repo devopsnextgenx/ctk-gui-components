@@ -39,5 +39,16 @@ class ScrollFrame(Frame):
         self.canvas.pack(side="left", fill="both", expand=True)
         self.scrollbar.pack(side="right", fill="y")
 
+        # Bind mouse wheel events for scrolling
+        self.canvas.bind_all("<MouseWheel>", self._on_mouse_wheel)
+        self.canvas.bind_all("<Button-4>", self._on_mouse_wheel)  # For Linux
+        self.canvas.bind_all("<Button-5>", self._on_mouse_wheel)  # For Linux
+
+    def _on_mouse_wheel(self, event):
+        if event.num == 5 or event.delta < 0:
+            self.canvas.yview_scroll(1, "units")
+        elif event.num == 4 or event.delta > 0:
+            self.canvas.yview_scroll(-1, "units")
+
     def get_scrollable_frame(self):
         return self.scrollable_frame

@@ -50,19 +50,8 @@ class Treeview(ttk.Frame):
         self.img_close = ImageTk.PhotoImage(self.im_close, size=(15, 15))
         self.img_empty = ImageTk.PhotoImage(self.im_empty, size=(15, 15))
 
-        # Create custom tree indicator elements - FIX: Swap the image assignments to match open/close states
+        # Create custom tree indicator elements
         self.style.configure("Treeview", indent=15)
-        # Create custom tree indicator elements - FIXED: Proper image assignments for open/close states
-        # self.style.element_create(
-        #     'CustomTreeitem.indicator',
-        #     'image',
-        #     self.img_close,  # Default (collapsed)
-        #     ('open', self.img_open),  # When expanded - arrow pointing down
-        #     ('!open', self.img_close),  # When collapsed - arrow pointing right
-        #     sticky='w',
-        #     width=15,
-        #     height=15
-        # )
 
         # Configure tree layout
         self.style.layout(
@@ -85,9 +74,9 @@ class Treeview(ttk.Frame):
 
         # Create a PanedWindow with proper orientation based on previewSide
         if self.previewSide in [PreviewSide.LEFT, PreviewSide.RIGHT]:
-            self.paned_window = ttk.PanedWindow(self, orient="horizontal")
+            self.paned_window = ttk.PanedWindow(self, orient="horizontal", height=self.height)
         else:
-            self.paned_window = ttk.PanedWindow(self, orient="vertical")
+            self.paned_window = ttk.PanedWindow(self, orient="vertical", height=self.height)
         
         self.paned_window.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
@@ -102,6 +91,7 @@ class Treeview(ttk.Frame):
             style="primary.Treeview",
         )
         
+        self.treeview.tag_configure("leaf", image=self.img_empty)
         self.treeview.tag_configure("open", image=self.img_open)
         self.treeview.tag_configure("closed", image=self.img_close)
         # Set up scrollbar for treeview
@@ -137,10 +127,6 @@ class Treeview(ttk.Frame):
             self.paned_window.add(self.tree_container, weight=1)
             self.paned_window.add(self.preview_container, weight=1)
 
-        # Set the initial sash position (divider) to be in the middle
-        # This is done after the widget is fully created and visible
-        self.after(100, self._set_initial_sash_position)
-
         # Configure grid weights
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -151,41 +137,24 @@ class Treeview(ttk.Frame):
         # Bind selection event
         self.treeview.bind("<<TreeviewSelect>>", self._handle_selection)
 
-    def _set_initial_sash_position(self):
-        """Set the initial sash position after widget is visible"""
-        try:
-            self.update_idletasks()  # Ensure layout calculations are complete
-
-            if self.previewSide in [PreviewSide.LEFT, PreviewSide.RIGHT]:
-                total_width = self.paned_window.winfo_width()
-                if total_width > 0:  # Ensure valid width
-                    print(f"Total Width: {total_width}")  # Debugging
-                    self.paned_window.sashpos(0, total_width // 2)
-                else:
-                    self.after(100, self._set_initial_sash_position)  # Retry later
-                    return
-            else:
-                total_height = self.paned_window.winfo_height()
-                if total_height > 0:  # Ensure valid height
-                    print(f"Total Height: {total_height}")  # Debugging
-                    self.paned_window.sashpos(0, total_height // 2)
-                else:
-                    self.after(100, self._set_initial_sash_position)  # Retry later
-                    return
-
-        except Exception as e:
-            print(f"Error setting sash position: {e}")  # Print error for debugging
-            self.after(100, self._set_initial_sash_position)  # Retry later
+        # Bind mouse wheel events for scrolling
+        self.treeview.bind("<MouseWheel>", self._on_mouse_wheel)
+        self.treeview.bind("<Button-4>", self._on_mouse_wheel)  # For Linux
+        self.treeview.bind("<Button-5>", self._on_mouse_wheel)  # For Linux
 
     def insert_items(self, items, parent=''):
         """Insert items into treeview and start in a closed state"""
         for item in items:
             item['open'] = False
-            if isinstance(item, dict) and 'children' in item:
+            
+            if isinstance(item, dict) and 'children' in item and item['children']:
+                # Insert parent node with proper tag
                 item_id = self.treeview.insert(parent, 'end', text=item[self.key], tags=["closed"])
+                # Insert children recursively
                 self.insert_items(item['children'], item_id)
             else:
-                self.treeview.insert(parent, 'end', text=item[self.key])
+                # Insert leaf node with leaf tag (no children)
+                self.treeview.insert(parent, 'end', text=item[self.key], tags=["leaf"])
 
     def _find_item(self, items, key, value):
         """Recursively find item in nested items by key and value"""
@@ -206,18 +175,37 @@ class Treeview(ttk.Frame):
             item_data = self.treeview.item(selected_item)
             item_name = item_data['text']
             
-            # Toggle the item's open state in the treeview
-            current_open_state = self.treeview.item(selected_item, 'open')
-            self.treeview.item(selected_item, open=not current_open_state)
-            
-            # Update tags based on the new state
-            if not current_open_state:  # Will be opened
-                self.treeview.item(selected_item, tags=["open"])
-            else:  # Will be closed
-                self.treeview.item(selected_item, tags=["closed"])
-            
-            # Find and update the corresponding data item
+            # Find the corresponding data item
             item = self._find_item(self.items, self.key, item_name)
+            
+            # Check if this is a leaf node (no children)
+            is_leaf = not (isinstance(item, dict) and 'children' in item and item['children'])
+            
+            if not is_leaf:
+                # Toggle the item's open state in the treeview
+                current_open_state = self.treeview.item(selected_item, 'open')
+                self.treeview.item(selected_item, open=not current_open_state)
+                
+                # Update tags based on the new state
+                if not current_open_state:  # Will be opened
+                    self.treeview.item(selected_item, tags=["open"])
+                else:  # Will be closed
+                    self.treeview.item(selected_item, tags=["closed"])
+                
+                # Update the corresponding data item
+                if item:
+                    item['open'] = not current_open_state
+            else:
+                # Ensure leaf nodes stay tagged as leaves
+                self.treeview.item(selected_item, tags=["leaf"])
+            
+            # Update preview for any selected item (leaf or non-leaf)
             if item:
-                item['open'] = not current_open_state
                 self.preview_frame.update_preview(item)
+
+    def _on_mouse_wheel(self, event):
+        if event.num == 5 or event.delta < 0:
+            self.treeview.yview_scroll(1, "units")
+        elif event.num == 4 or event.delta > 0:
+            self.treeview.yview_scroll(-1, "units")
+        return "break"  # Prevent the event from propagating to the parent

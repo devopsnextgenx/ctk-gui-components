@@ -243,6 +243,36 @@ class Demo(ttk.Window):
                 "salary": employee.salary,
                 "location": employee.location,
                 "years_of_service": employee.years_of_service,
+                "property1": "value1",
+                "property2": "value2",
+                "property3": "value3",
+                "property4": "value4",
+                "property5": "value5",
+                "property6": "value6",
+                "property7": "value7",
+                "property8": "value8",
+                "property9": "value9",
+                "property10": "value10",
+                "property11": "value11",
+                "property12": "value12",
+                "property13": "value13",
+                "property14": "value14",
+                "property15": "value15",
+                "property16": "value16",
+                "property17": "value17",
+                "property18": "value18",
+                "property19": "value19",
+                "property20": "value20",
+                "property21": "value21",
+                "property22": "value22",
+                "property23": "value23",
+                "property24": "value24",
+                "property25": "value25",
+                "property26": "value26",
+                "property27": "value27",
+                "property28": "value28",
+                "property29": "value29",
+                "property30": "value30"
             }
             if employee.subordinates:
                 item["children"] = [convert_to_tree_items(sub) for sub in employee.subordinates]
@@ -252,7 +282,7 @@ class Demo(ttk.Window):
         
         rootFrame = ttk.Frame(parent)
         rootFrame.pack(fill="both", expand=False, pady=10)
-        self.employee_tree = Treeview(rootFrame, items=tree_items, previewSide=PreviewSide.RIGHT)
+        self.employee_tree = Treeview(rootFrame, items=tree_items, previewSide=PreviewSide.LEFT, height=200)
         self.employee_tree.pack(fill="both", expand=False, pady=10)
 
     def simulate_process(self):

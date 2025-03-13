@@ -32,6 +32,8 @@ class PreviewFrame(ttk.Frame):
                                      lambda e: self.preview_canvas.configure(
                                          scrollregion=self.preview_canvas.bbox("all")))
 
+        self.preview_inner_frame.bind("<MouseWheel>", self._on_mouse_wheel)
+
     def update_preview(self, item_data):
         """Update preview frame with selected item data"""
         # Clear existing widgets
@@ -51,3 +53,8 @@ class PreviewFrame(ttk.Frame):
             self.grid(row=1, column=0, sticky="nsew")
         elif self.previewSide == 'right':
             self.grid(row=1, column=1, sticky="nsew")
+            
+    def _on_mouse_wheel(self, event):
+        if event.delta:
+            self.preview_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        return "break"  # Prevent the event from propagating to the parent
