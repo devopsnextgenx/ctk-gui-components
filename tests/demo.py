@@ -282,7 +282,7 @@ class Demo(ttk.Window):
         
         rootFrame = ttk.Frame(parent)
         rootFrame.pack(fill="both", expand=False, pady=10)
-        self.employee_tree = Treeview(rootFrame, items=tree_items, previewSide=PreviewSide.LEFT, height=200)
+        self.employee_tree = Treeview(rootFrame, items=tree_items, previewSide=PreviewSide.LEFT, height=400)
         self.employee_tree.pack(fill="both", expand=False, pady=10)
 
     def simulate_process(self):
