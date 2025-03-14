@@ -86,15 +86,15 @@ class Treeview(ttk.Frame):
 
         # Create a PanedWindow with proper orientation based on previewSide
         if self.previewSide in [PreviewSide.LEFT, PreviewSide.RIGHT]:
-            self.paned_window = ttk.PanedWindow(self, orient="horizontal", height=self.height)
+            self.paned_window = ttk.PanedWindow(self, orient="horizontal", height=self.height, style="CustomPane.TPanedwindow")
         else:
-            self.paned_window = ttk.PanedWindow(self, orient="vertical", height=self.height)
+            self.paned_window = ttk.PanedWindow(self, orient="vertical", height=self.height, style="CustomPane.TPanedwindow")
         
         self.paned_window.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
         # Create frames to hold each component
-        self.tree_container = ttk.Frame(self.paned_window, style="CustomPane.TPanedwindow")
-        self.preview_container = ttk.Frame(self.paned_window, style="CustomPane.TPanedwindow")
+        self.tree_container = ttk.Frame(self.paned_window)
+        self.preview_container = ttk.Frame(self.paned_window)
 
         # Create treeview widget inside its container
         self.treeview = ttk.Treeview(
@@ -120,8 +120,6 @@ class Treeview(ttk.Frame):
         
         # Explicitly set the height of tree_container (in pixels)
         self.tree_container.configure(height=self.height)
-        # self.tree_container.pack_configure(padx=5, pady=5)
-        # Prevent the container from changing size
         self.tree_container.pack_propagate(False)
 
         # Create preview frame inside its container
@@ -130,7 +128,6 @@ class Treeview(ttk.Frame):
         else:
             self.preview_frame = PreviewFrame(self.preview_container, self.previewSide)
         
-        # self.preview_container.pack_configure(padx=5, pady=5)
         self.preview_frame.pack(fill="both", expand=True)
 
         # Add containers to paned window based on previewSide
@@ -150,7 +147,7 @@ class Treeview(ttk.Frame):
 
         # Bind selection event
         self.treeview.bind("<<TreeviewSelect>>", self._handle_selection)
-
+        
         # Bind mouse wheel events for scrolling
         self.treeview.bind("<MouseWheel>", self._on_mouse_wheel)
         self.treeview.bind("<Button-4>", self._on_mouse_wheel)  # For Linux
